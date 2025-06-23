@@ -1,0 +1,165 @@
+{
+  "info": {
+    "name": "Blog API with Errors",
+    "description": "Collection for managing posts in NestJS Prisma app including error responses",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "9a9a79e7-8a7c-4a66-9c5c-1bba3db8d2d1"
+  },
+  "item": [
+    {
+      "name": "Get All Posts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/posts",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Post By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/posts/{{postId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts", "{{postId}}"]
+        }
+      },
+      "response": [
+        {
+          "name": "Post Found",
+          "status": "200",
+          "code": 200,
+          "body": "{\n  \"id\": \"{{postId}}\",\n  \"title\": \"כותרת לדוגמה\",\n  \"content\": \"תוכן עם עברית\",\n  \"publishTime\": \"2030-01-01T10:00:00.000Z\"\n}"
+        },
+        {
+          "name": "Post Not Found",
+          "status": "404 Not Found",
+          "code": 404,
+          "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Post not found\",\n  \"error\": \"Not Found\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Post",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/posts/dummy-id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts", "dummy-id"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"כותרת חדשה\",\n  \"content\": \"תוכן עברי\",\n  \"publishTime\": \"{{futureDate}}\"\n}"
+        }
+      },
+      "response": [
+        {
+          "name": "Created Successfully",
+          "status": "201 Created",
+          "code": 201,
+          "body": "{\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"title\": \"כותרת חדשה\",\n  \"content\": \"תוכן עברי\",\n  \"publishTime\": \"2030-01-01T10:00:00.000Z\"\n}"
+        },
+        {
+          "name": "Validation Error",
+          "status": "400 Bad Request",
+          "code": 400,
+          "body": "{\n  \"statusCode\": 400,\n  \"message\": [\"title must not contain forbidden words\", \"content must be at least 50% Hebrew\"],\n  \"error\": \"Bad Request\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Update Post",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/posts/{{postId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts", "{{postId}}"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"כותרת מעודכנת\",\n  \"content\": \"עוד תוכן בעברית\"\n}"
+        }
+      },
+      "response": [
+        {
+          "name": "Updated Successfully",
+          "status": "200 OK",
+          "code": 200,
+          "body": "{\n  \"id\": \"{{postId}}\",\n  \"title\": \"כותרת מעודכנת\",\n  \"content\": \"עוד תוכן בעברית\",\n  \"publishTime\": \"2030-01-01T10:00:00.000Z\"\n}"
+        },
+        {
+          "name": "Post Not Found",
+          "status": "404 Not Found",
+          "code": 404,
+          "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Post not found\",\n  \"error\": \"Not Found\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Delete Post",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/posts/{{postId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["posts", "{{postId}}"]
+        }
+      },
+      "response": [
+        {
+          "name": "Deleted Successfully",
+          "status": "204 No Content",
+          "code": 204,
+          "body": ""
+        },
+        {
+          "name": "Post Not Found",
+          "status": "404 Not Found",
+          "code": 404,
+          "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Post not found\",\n  \"error\": \"Not Found\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "postId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "futureDate",
+      "value": "2030-01-01T10:00:00.000Z"
+    }
+  ]
+}

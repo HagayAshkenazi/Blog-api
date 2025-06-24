@@ -17,9 +17,4 @@ export class CreatePostDto {
   @MaxLength(200)
   @IsMostlyHebrew()
   content: string;
-
-  @IsNotEmpty()
-  @IsFutureDate()
-  @IsDate()
-  publishTime: Date;
 }

@@ -1,19 +1,19 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["public", "blog"]
+  schemas  = ["blog", "public"]
 }
 
 model PostData {
-  id          String   @id @default(uuid()) @db.Uuid
-  title       String   @db.VarChar(25)
-  content     String
-  publishTime DateTime @map("publish_time")
+  id        String   @id @default(uuid()) @db.Uuid
+  title     String   @db.VarChar(25)
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("posts")
   @@schema("blog")

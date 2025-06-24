@@ -9,6 +9,8 @@ import { morganLogger } from './common/middlewares/logs';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { validationExceptionFactory } from './common/exceptions/validation-exception.factory';
 import { AuthGuard } from './common/guards/auth.guard';
+import { I18nContext } from 'nestjs-i18n';
+import { ValidationError } from 'class-validator';
 
 const bootstrap = async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
@@ -22,7 +24,11 @@ const bootstrap = async (): Promise<void> => {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
-      exceptionFactory: validationExceptionFactory,
+      exceptionFactory: (errors: ValidationError[]) => {
+        const i18nContext = I18nContext.current();
+
+        return validationExceptionFactory(errors, i18nContext!);
+      },
     }),
   );
 

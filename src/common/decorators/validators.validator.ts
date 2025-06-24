@@ -1,7 +1,5 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-} from 'class-validator';
+import { registerDecorator, ValidationOptions } from 'class-validator';
+import { I18nContext } from 'nestjs-i18n';
 
 export const FORBIDDEN_WORDS = [
   'תשוש',
@@ -40,7 +38,8 @@ export const isMostlyHebrew = (value: string): boolean => {
   return total > 0 && hebrew / total > 0.5;
 };
 
-export const IsFutureDate = (validationOptions?: ValidationOptions) =>
+export const IsFutureDate =
+  (validationOptions?: ValidationOptions) =>
   (object: Object, propertyName: string) => {
     registerDecorator({
       name: 'isFutureDate',
@@ -48,13 +47,16 @@ export const IsFutureDate = (validationOptions?: ValidationOptions) =>
       propertyName,
       options: validationOptions,
       validator: {
-        validate: isFutureDate,
-        defaultMessage: () => 'Publish time must be in the future',
+      validate: isFutureDate,
+      defaultMessage: (args) =>
+        I18nContext.current()?.t('validation.FUTURE_DATE') ||
+        'Publish time must be in the future',
       },
     });
   };
 
-export const NoForbiddenWords = (validationOptions?: ValidationOptions) =>
+export const NoForbiddenWords =
+  (validationOptions?: ValidationOptions) =>
   (object: Object, propertyName: string) => {
     registerDecorator({
       name: 'noForbiddenWords',
@@ -62,13 +64,16 @@ export const NoForbiddenWords = (validationOptions?: ValidationOptions) =>
       propertyName,
       options: validationOptions,
       validator: {
-        validate: (value: string) => !containsForbiddenWords(value),
-        defaultMessage: () => 'The title contains a forbidden word',
+      validate: (value: string) => !containsForbiddenWords(value),
+      defaultMessage: (args) =>
+        I18nContext.current()?.t('validation.FORBIDDEN_WORDS') ||
+        'The title contains a forbidden word',
       },
     });
   };
 
-export const IsMostlyHebrew = (validationOptions?: ValidationOptions) =>
+export const IsMostlyHebrew =
+  (validationOptions?: ValidationOptions) =>
   (object: Object, propertyName: string) => {
     registerDecorator({
       name: 'isMostlyHebrew',
@@ -77,7 +82,9 @@ export const IsMostlyHebrew = (validationOptions?: ValidationOptions) =>
       options: validationOptions,
       validator: {
         validate: isMostlyHebrew,
-        defaultMessage: () => 'At least 50% of the content must be in Hebrew',
+        defaultMessage: (args) =>
+          I18nContext.current()?.t('validation.MOSTLY_HEBREW') ||
+          'At least 50% of the content must be in Hebrew',
       },
     });
   };

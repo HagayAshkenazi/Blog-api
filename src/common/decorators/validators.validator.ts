@@ -13,10 +13,10 @@ export const FORBIDDEN_WORDS = [
   'קונץ',
 ];
 
-export const isFutureDate = (value: unknown): boolean =>
+export const isFutureDate = (value: Date): boolean =>
   value instanceof Date && value.getTime() > Date.now();
 
-export const containsForbiddenWords = (value: unknown): boolean => {
+export const containsForbiddenWords = (value: string): boolean => {
   if (typeof value !== 'string' || !value) {
     return false;
   }
@@ -29,7 +29,7 @@ export const containsForbiddenWords = (value: unknown): boolean => {
   return words.some((word) => FORBIDDEN_WORDS.includes(word));
 };
 
-export const isMostlyHebrew = (value: unknown): boolean => {
+export const isMostlyHebrew = (value: string): boolean => {
   if (typeof value !== 'string' || !value) {
     return false;
   }
@@ -62,7 +62,7 @@ export const NoForbiddenWords = (validationOptions?: ValidationOptions) =>
       propertyName,
       options: validationOptions,
       validator: {
-        validate: (value: unknown) => !containsForbiddenWords(value),
+        validate: (value: string) => !containsForbiddenWords(value),
         defaultMessage: () => 'The title contains a forbidden word',
       },
     });

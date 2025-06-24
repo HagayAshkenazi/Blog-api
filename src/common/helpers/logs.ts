@@ -9,9 +9,7 @@ export const logger = winston.createLogger({
     ? winston.format.json()
     : winston.format.combine(
         winston.format.colorize({ all: true }),
-        winston.format.prettyPrint()
+        winston.format.prettyPrint(),
       ),
-  transports: [
-    new winston.transports.Console()
-  ],
+  transports: [new winston.transports.Console()],
 });

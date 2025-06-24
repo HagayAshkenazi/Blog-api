@@ -1,6 +1,11 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -11,7 +16,7 @@ export class LoggingInterceptor implements NestInterceptor {
       tap(() => {
         const elapsed = Date.now() - startTime;
         console.log(`After... ${elapsed}ms`);
-      })
+      }),
     );
   }
 }

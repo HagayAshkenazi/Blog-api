@@ -1,10 +1,9 @@
 import {
   registerDecorator,
   ValidationOptions,
-  ValidationArguments,
 } from 'class-validator';
 
-const FORBIDDEN_WORDS = [
+export const FORBIDDEN_WORDS = [
   'תשוש',
   'תרנגול',
   'פעמון',
@@ -14,11 +13,10 @@ const FORBIDDEN_WORDS = [
   'קונץ',
 ];
 
-function isFutureDate(value: unknown): boolean {
-  return value instanceof Date && value.getTime() > Date.now();
-}
+export const isFutureDate = (value: unknown): boolean =>
+  value instanceof Date && value.getTime() > Date.now();
 
-function containsForbiddenWords(value: unknown): boolean {
+export const containsForbiddenWords = (value: unknown): boolean => {
   if (typeof value !== 'string' || !value) {
     return false;
   }
@@ -29,9 +27,9 @@ function containsForbiddenWords(value: unknown): boolean {
     .filter(Boolean);
 
   return words.some((word) => FORBIDDEN_WORDS.includes(word));
-}
+};
 
-function isMostlyHebrew(value: unknown): boolean {
+export const isMostlyHebrew = (value: unknown): boolean => {
   if (typeof value !== 'string' || !value) {
     return false;
   }
@@ -40,10 +38,10 @@ function isMostlyHebrew(value: unknown): boolean {
   const hebrew = (value.match(/[א-ת]/g) || []).length;
 
   return total > 0 && hebrew / total > 0.5;
-}
+};
 
-export function IsFutureDate(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+export const IsFutureDate = (validationOptions?: ValidationOptions) =>
+  (object: Object, propertyName: string) => {
     registerDecorator({
       name: 'isFutureDate',
       target: object.constructor,
@@ -55,10 +53,9 @@ export function IsFutureDate(validationOptions?: ValidationOptions) {
       },
     });
   };
-}
 
-export function NoForbiddenWords(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+export const NoForbiddenWords = (validationOptions?: ValidationOptions) =>
+  (object: Object, propertyName: string) => {
     registerDecorator({
       name: 'noForbiddenWords',
       target: object.constructor,
@@ -70,10 +67,9 @@ export function NoForbiddenWords(validationOptions?: ValidationOptions) {
       },
     });
   };
-}
 
-export function IsMostlyHebrew(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+export const IsMostlyHebrew = (validationOptions?: ValidationOptions) =>
+  (object: Object, propertyName: string) => {
     registerDecorator({
       name: 'isMostlyHebrew',
       target: object.constructor,
@@ -85,4 +81,3 @@ export function IsMostlyHebrew(validationOptions?: ValidationOptions) {
       },
     });
   };
-}

@@ -1,8 +1,8 @@
 import { BadRequestException, ValidationError } from '@nestjs/common';
 
-export function validationExceptionFactory(
+export const validationExceptionFactory = (
   errors: ValidationError[],
-): BadRequestException {
+): BadRequestException => {
   const formattedErrors = errors.map((error) => ({
     field: error.property,
     errors: Object.values(error.constraints ?? {}),
@@ -12,4 +12,4 @@ export function validationExceptionFactory(
     message: 'Validation failed',
     errors: formattedErrors,
   });
-}
+};

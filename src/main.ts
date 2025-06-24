@@ -10,7 +10,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { validationExceptionFactory } from './common/exceptions/validation-exception.factory';
 import { AuthGuard } from './common/guards/auth.guard';
 
-async function bootstrap(): Promise<void> {
+const bootstrap = async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
@@ -26,10 +26,7 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
-  app.useGlobalFilters(
-    new GeneralExceptionFilter(),
-    new HttpExceptionFilter(),
-  );
+  app.useGlobalFilters(new GeneralExceptionFilter(), new HttpExceptionFilter());
 
   app.use(morganLogger);
 
@@ -38,6 +35,6 @@ async function bootstrap(): Promise<void> {
   app.enableCors();
 
   await app.listen(3000);
-}
+};
 
 bootstrap();

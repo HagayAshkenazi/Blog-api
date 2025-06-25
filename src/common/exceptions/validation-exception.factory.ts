@@ -38,7 +38,7 @@ export const validationExceptionFactory = (
   return new BadRequestException(
     errorObject(
       HttpStatus.BAD_REQUEST,
-      'validation.VALIDATION_FAILED',
+      i18n.translate('validation.VALIDATION_FAILED'),
       formattedErrors,
     ),
   );

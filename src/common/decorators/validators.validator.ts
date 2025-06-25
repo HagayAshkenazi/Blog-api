@@ -47,10 +47,10 @@ export const IsFutureDate =
       propertyName,
       options: validationOptions,
       validator: {
-      validate: isFutureDate,
-      defaultMessage: (args) =>
-        I18nContext.current()?.t('validation.FUTURE_DATE') ||
-        'Publish time must be in the future',
+        validate: isFutureDate,
+        defaultMessage: (args) =>
+          I18nContext.current()?.translate('validation.FUTURE_DATE') ||
+          'Publish time must be in the future',
       },
     });
   };
@@ -64,10 +64,10 @@ export const NoForbiddenWords =
       propertyName,
       options: validationOptions,
       validator: {
-      validate: (value: string) => !containsForbiddenWords(value),
-      defaultMessage: (args) =>
-        I18nContext.current()?.t('validation.FORBIDDEN_WORDS') ||
-        'The title contains a forbidden word',
+        validate: (value: string) => !containsForbiddenWords(value),
+        defaultMessage: (args) =>
+          I18nContext.current()?.translate('validation.FORBIDDEN_WORDS') ||
+          'The title contains a forbidden word',
       },
     });
   };
@@ -83,7 +83,7 @@ export const IsMostlyHebrew =
       validator: {
         validate: isMostlyHebrew,
         defaultMessage: (args) =>
-          I18nContext.current()?.t('validation.MOSTLY_HEBREW') ||
+          I18nContext.current()?.translate('validation.MOSTLY_HEBREW') ||
           'At least 50% of the content must be in Hebrew',
       },
     });

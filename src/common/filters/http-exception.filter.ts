@@ -17,11 +17,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
     const errorResponse = exception.getResponse();
 
-    const message =
-      typeof errorResponse === 'string'
-        ? errorResponse
-        : (errorResponse as { message?: string }).message || exception.message;
-
     logger.error({
       name: 'HTTP Exception',
       path: request.url,
@@ -29,6 +24,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
       exception,
     });
 
-    response.status(status).json(errorObject(status, message));
+    if (typeof errorResponse === 'object' && errorResponse !== null) {
+      const { message, errors } = errorResponse as any;
+      
+      response
+        .status(status)
+        .json(errorObject(status, message ?? exception.message, errors));
+    } else {
+      response
+        .status(status)
+        .json(errorObject(status, errorResponse ?? exception.message));
+    }
   }
 }

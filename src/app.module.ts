@@ -1,8 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './modules/posts/posts.module';
 import * as path from 'path';
-import { HeaderResolver, I18nJsonLoader, I18nModule } from 'nestjs-i18n';
+import {
+  AcceptLanguageResolver,
+  HeaderResolver,
+  I18nJsonLoader,
+  I18nModule,
+  I18nService,
+  QueryResolver,
+} from 'nestjs-i18n';
 
 @Module({
   imports: [
@@ -11,12 +18,14 @@ import { HeaderResolver, I18nJsonLoader, I18nModule } from 'nestjs-i18n';
     }),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
-      loader: I18nJsonLoader,
       loaderOptions: {
-        path: path.join(__dirname, '/i18n/'),
-        watch: true,
+        path: path.join(__dirname, '../src/i18n'),
+        watch: false,
       },
-      resolvers: [{ use: HeaderResolver, options: ['accept-language'] }],
+      resolvers: [
+        { use: QueryResolver, options: ['lang', 'locale'] },
+        AcceptLanguageResolver,
+      ],
     }),
 
     PostsModule,

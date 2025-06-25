@@ -18,7 +18,7 @@ export class PostsRepository {
 
     if (!post) {
       const message = i18n
-        ? i18n.t('posts.errors.NOT_FOUND', { args: { id } })
+        ? i18n.translate('posts.errors.NOT_FOUND', { args: { id } })
         : `Post with ID ${id} not found`;
 
       throw new NotFoundException(message);
@@ -38,7 +38,7 @@ export class PostsRepository {
     });
 
     const message = i18n
-      ? i18n.t('posts.success.CREATED')
+      ? i18n.translate('posts.success.CREATED')
       : 'Post created successfully';
 
     return { message, post };
@@ -53,7 +53,7 @@ export class PostsRepository {
 
     if (!post) {
       const message = i18n
-        ? i18n.t('posts.errors.NOT_FOUND', { args: { id } })
+        ? i18n.translate('posts.errors.NOT_FOUND', { args: { id } })
         : `Post with ID ${id} not found`;
 
       throw new NotFoundException(message);
@@ -70,7 +70,7 @@ export class PostsRepository {
     });
 
     const message = i18n
-      ? i18n.t('posts.success.UPDATED')
+      ? i18n.translate('posts.success.UPDATED')
       : 'Post updated successfully';
 
     return { message, post: updatedPost };
@@ -81,7 +81,7 @@ export class PostsRepository {
 
     if (!post) {
       const message = i18n
-        ? i18n.t('posts.errors.NOT_FOUND', { args: { id } })
+        ? i18n.translate('posts.errors.NOT_FOUND', { args: { id } })
         : `Post with ID ${id} not found`;
 
       throw new NotFoundException(message);
@@ -90,7 +90,7 @@ export class PostsRepository {
     await this.prisma.postData.delete({ where: { id } });
 
     const message = i18n
-      ? i18n.t('posts.success.DELETED')
+      ? i18n.translate('posts.success.DELETED')
       : 'Post deleted successfully';
 
     return { message };

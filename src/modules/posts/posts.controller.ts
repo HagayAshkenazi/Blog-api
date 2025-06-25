@@ -44,6 +44,8 @@ export class PostsController {
     @Body() updatePostDto: UpdatePostDto,
     @I18n() i18n: I18nContext,
   ) {
+    const translated = await i18n.translate('validation.FUTURE_DATE');
+    console.log('תרגום:', translated);
     return this.postsService.update(id, updatePostDto, i18n);
   }
 

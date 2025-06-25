@@ -1,6 +1,6 @@
 {
   "validation": {
-    "VALIDATION_FAILED": "validation failed",
+    "VALIDATION_FAILED": "Validation failed",
     "FUTURE_DATE": "Publish time must be in the future",
     "FORBIDDEN_WORDS": "The title contains a forbidden word",
     "MOSTLY_HEBREW": "At least 50% of the content must be in Hebrew"

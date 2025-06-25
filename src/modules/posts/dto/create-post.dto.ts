@@ -1,6 +1,5 @@
-import { IsDate, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import {
-  IsFutureDate,
   NoForbiddenWords,
   IsMostlyHebrew,
 } from 'src/common/decorators/validators.validator';

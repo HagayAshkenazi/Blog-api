@@ -23,7 +23,7 @@ export const validationExceptionFactory = (
         typeof msg === 'string' &&
         (msg.startsWith('validation.') || msg.startsWith('posts.'))
       ) {
-        return i18n.t(msg);
+        return i18n.translate(msg);
       }
 
       return msg;

@@ -1,3 +1,6 @@
+import { logger } from '../helpers/logs';
+import { HttpMessage } from '../constants/http';
+
 import {
   Catch,
   ExceptionFilter,
@@ -5,9 +8,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { logger } from '../helpers/logs';
-import { HttpMessage } from '../constants/http';
-import { errorObject } from 'src/common/helpers/functions';
+import { errorObject } from '../helpers/functions';
 
 @Catch()
 export class GeneralExceptionFilter implements ExceptionFilter {
@@ -31,8 +32,6 @@ export class GeneralExceptionFilter implements ExceptionFilter {
       },
     });
 
-    response.status(status).json(
-      errorObject(status, message),
-    );
+    response.status(status).json(errorObject(status, message));
   }
 }

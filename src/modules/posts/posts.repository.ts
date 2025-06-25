@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { I18nContext } from 'nestjs-i18n';
 import { PostData } from '@prisma/client';
 
 @Injectable()
@@ -13,23 +12,19 @@ export class PostsRepository {
     return this.prisma.postData.findMany();
   }
 
-  async findPostById(id: string, i18n?: I18nContext): Promise<PostData> {
+  async findPostById(id: string): Promise<PostData> {
     const post = await this.prisma.postData.findUnique({ where: { id } });
-
     if (!post) {
-      const message = i18n
-        ? i18n.translate('posts.errors.NOT_FOUND', { args: { id } })
-        : `Post with ID ${id} not found`;
-
-      throw new NotFoundException(message);
+      throw new NotFoundException({
+        message: 'posts.errors.NOT_FOUND',
+        args: { id },
+      });
     }
-
     return post;
   }
 
   async create(
     createPostDto: CreatePostDto,
-    i18n?: I18nContext,
   ): Promise<{ message: string; post: PostData }> {
     const { title, content } = createPostDto;
 
@@ -37,26 +32,23 @@ export class PostsRepository {
       data: { title, content },
     });
 
-    const message = i18n
-      ? i18n.translate('posts.success.CREATED')
-      : 'Post created successfully';
-
-    return { message, post };
+    return {
+      message: 'posts.success.CREATED',
+      post,
+    };
   }
 
   async update(
     id: string,
     updatePostDto: UpdatePostDto,
-    i18n?: I18nContext,
   ): Promise<{ message: string; post: PostData }> {
     const post = await this.prisma.postData.findUnique({ where: { id } });
 
     if (!post) {
-      const message = i18n
-        ? i18n.translate('posts.errors.NOT_FOUND', { args: { id } })
-        : `Post with ID ${id} not found`;
-
-      throw new NotFoundException(message);
+      throw new NotFoundException({
+        message: 'posts.errors.NOT_FOUND',
+        args: { id },
+      });
     }
 
     const { title, content } = updatePostDto;
@@ -69,30 +61,26 @@ export class PostsRepository {
       },
     });
 
-    const message = i18n
-      ? i18n.translate('posts.success.UPDATED')
-      : 'Post updated successfully';
-
-    return { message, post: updatedPost };
+    return {
+      message: 'posts.success.UPDATED',
+      post: updatedPost,
+    };
   }
 
-  async delete(id: string, i18n?: I18nContext): Promise<{ message: string }> {
+  async delete(id: string): Promise<{ message: string }> {
     const post = await this.prisma.postData.findUnique({ where: { id } });
 
     if (!post) {
-      const message = i18n
-        ? i18n.translate('posts.errors.NOT_FOUND', { args: { id } })
-        : `Post with ID ${id} not found`;
-
-      throw new NotFoundException(message);
+      throw new NotFoundException({
+        message: 'posts.errors.NOT_FOUND',
+        args: { id },
+      });
     }
 
     await this.prisma.postData.delete({ where: { id } });
 
-    const message = i18n
-      ? i18n.translate('posts.success.DELETED')
-      : 'Post deleted successfully';
-
-    return { message };
+    return {
+      message: 'posts.success.DELETED',
+    };
   }
 }

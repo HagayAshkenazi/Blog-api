@@ -25,6 +25,7 @@ export const validationExceptionFactory = (
       ) {
         return i18n.t(msg);
       }
+
       return msg;
     });
 

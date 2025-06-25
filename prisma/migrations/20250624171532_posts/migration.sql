@@ -15,6 +15,4 @@ CREATE TABLE IF NOT EXISTS blog.posts (
         char_length(content) <= 200 AND 
         (length(regexp_replace(content, '[^א-ת]', '', 'g'))::double precision / GREATEST(length(content), 1)) > 0.5
     )
-
-    CONSTRAINT "posts_pkey" PRIMARY KEY ("id")
 );

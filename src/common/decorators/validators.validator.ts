@@ -1,5 +1,4 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
-import { I18nContext } from 'nestjs-i18n';
 
 export const FORBIDDEN_WORDS = [
   'תשוש',
@@ -10,9 +9,6 @@ export const FORBIDDEN_WORDS = [
   'מרגול',
   'קונץ',
 ];
-
-export const isFutureDate = (value: Date): boolean =>
-  value instanceof Date && value.getTime() > Date.now();
 
 export const containsForbiddenWords = (value: string): boolean => {
   if (typeof value !== 'string' || !value) {
@@ -38,23 +34,6 @@ export const isMostlyHebrew = (value: string): boolean => {
   return total > 0 && hebrew / total > 0.5;
 };
 
-export const IsFutureDate =
-  (validationOptions?: ValidationOptions) =>
-  (object: Object, propertyName: string) => {
-    registerDecorator({
-      name: 'isFutureDate',
-      target: object.constructor,
-      propertyName,
-      options: validationOptions,
-      validator: {
-        validate: isFutureDate,
-        defaultMessage: (args) =>
-          I18nContext.current()?.translate('validation.FUTURE_DATE') ||
-          'Publish time must be in the future',
-      },
-    });
-  };
-
 export const NoForbiddenWords =
   (validationOptions?: ValidationOptions) =>
   (object: Object, propertyName: string) => {
@@ -65,9 +44,7 @@ export const NoForbiddenWords =
       options: validationOptions,
       validator: {
         validate: (value: string) => !containsForbiddenWords(value),
-        defaultMessage: (args) =>
-          I18nContext.current()?.translate('validation.FORBIDDEN_WORDS') ||
-          'The title contains a forbidden word',
+        defaultMessage: () => 'validation.FORBIDDEN_WORDS',
       },
     });
   };
@@ -82,9 +59,7 @@ export const IsMostlyHebrew =
       options: validationOptions,
       validator: {
         validate: isMostlyHebrew,
-        defaultMessage: (args) =>
-          I18nContext.current()?.translate('validation.MOSTLY_HEBREW') ||
-          'At least 50% of the content must be in Hebrew',
+        defaultMessage: () => 'validation.MOSTLY_HEBREW',
       },
     });
   };

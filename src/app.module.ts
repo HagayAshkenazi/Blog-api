@@ -18,12 +18,9 @@ import {
     }),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
-      loaderOptions: {
-        path: path.join(__dirname, '../src/i18n'),
-        watch: false,
-      },
+      loaderOptions: { path: __dirname + '/i18n/', watch: true },
       resolvers: [
-        { use: QueryResolver, options: ['lang', 'locale'] },
+        { use: QueryResolver, options: ['lang', 'locale', 'l'] },
         AcceptLanguageResolver,
       ],
     }),

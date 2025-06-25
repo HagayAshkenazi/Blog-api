@@ -3,21 +3,27 @@ import { PrismaService } from 'prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostData } from '@prisma/client';
+import { I18nService, I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class PostsRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService,
+  ) {}
 
   async findAllPosts(): Promise<PostData[]> {
     return this.prisma.postData.findMany();
   }
 
-  async findPostById(id: string): Promise<PostData> {
+  async findPostById(id: string, i18nContext: I18nContext): Promise<PostData> {
     const post = await this.prisma.postData.findUnique({ where: { id } });
     if (!post) {
       throw new NotFoundException({
-        message: 'posts.errors.NOT_FOUND',
-        args: { id },
+        message: await this.i18n.translate('posts.errors.NOT_FOUND', {
+          lang: i18nContext.lang,
+          args: { id },
+        }),
       });
     }
     return post;
@@ -25,6 +31,7 @@ export class PostsRepository {
 
   async create(
     createPostDto: CreatePostDto,
+    i18nContext: I18nContext,
   ): Promise<{ message: string; post: PostData }> {
     const { title, content } = createPostDto;
 
@@ -33,7 +40,9 @@ export class PostsRepository {
     });
 
     return {
-      message: 'posts.success.CREATED',
+      message: await this.i18n.translate('posts.success.CREATED', {
+        lang: i18nContext.lang,
+      }),
       post,
     };
   }
@@ -41,13 +50,16 @@ export class PostsRepository {
   async update(
     id: string,
     updatePostDto: UpdatePostDto,
+    i18nContext: I18nContext,
   ): Promise<{ message: string; post: PostData }> {
     const post = await this.prisma.postData.findUnique({ where: { id } });
 
     if (!post) {
       throw new NotFoundException({
-        message: 'posts.errors.NOT_FOUND',
-        args: { id },
+        message: await this.i18n.translate('posts.errors.NOT_FOUND', {
+          lang: i18nContext.lang,
+          args: { id },
+        }),
       });
     }
 
@@ -62,25 +74,31 @@ export class PostsRepository {
     });
 
     return {
-      message: 'posts.success.UPDATED',
+      message: await this.i18n.translate('posts.success.UPDATED', {
+        lang: i18nContext.lang,
+      }),
       post: updatedPost,
     };
   }
 
-  async delete(id: string): Promise<{ message: string }> {
+  async delete(id: string, i18nContext: I18nContext): Promise<{ message: string }> {
     const post = await this.prisma.postData.findUnique({ where: { id } });
 
     if (!post) {
       throw new NotFoundException({
-        message: 'posts.errors.NOT_FOUND',
-        args: { id },
+        message: await this.i18n.translate('posts.errors.NOT_FOUND', {
+          lang: i18nContext.lang,
+          args: { id },
+        }),
       });
     }
 
     await this.prisma.postData.delete({ where: { id } });
 
     return {
-      message: 'posts.success.DELETED',
+      message: await this.i18n.translate('posts.success.DELETED', {
+        lang: i18nContext.lang,
+      }),
     };
   }
 }

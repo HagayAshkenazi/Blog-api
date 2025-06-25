@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsRepository } from './posts.repository';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class PostsService {
@@ -11,19 +12,19 @@ export class PostsService {
     return this.postsRepository.findAllPosts();
   }
 
-  async findPostById(id: string) {
-    return this.postsRepository.findPostById(id);
+  async findPostById(id: string, i18nContext: I18nContext) {
+    return this.postsRepository.findPostById(id, i18nContext);
   }
 
-  async create(data: CreatePostDto) {
-    return this.postsRepository.create(data);
+  async create(data: CreatePostDto, i18nContext: I18nContext) {
+    return this.postsRepository.create(data, i18nContext);
   }
 
-  async update(id: string, data: UpdatePostDto) {
-    return this.postsRepository.update(id, data);
+  async update(id: string, data: UpdatePostDto, i18nContext: I18nContext) {
+    return this.postsRepository.update(id, data, i18nContext);
   }
 
-  async delete(id: string) {
-    return this.postsRepository.delete(id);
+  async delete(id: string, i18nContext: I18nContext) {
+    return this.postsRepository.delete(id, i18nContext);
   }
 }

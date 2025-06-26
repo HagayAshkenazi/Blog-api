@@ -1,11 +1,14 @@
 import { Request } from 'express';
+
 import { ConfigService } from '@nestjs/config';
+
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
@@ -17,7 +20,8 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const authHeader = request.headers['authorization'];
+
+    const authHeader = request.headers['authorization'] as string | undefined;
 
     if (!authHeader) {
       throw new UnauthorizedException(
@@ -27,7 +31,11 @@ export class AuthGuard implements CanActivate {
 
     const [type, token] = authHeader.split(' ');
 
-    if (type !== 'Bearer' || token !== this.configService.get('AUTH_TOKEN')) {
+    if (
+      type !== 'Bearer' ||
+      !token ||
+      token !== this.configService.get<string>('AUTH_TOKEN')
+    ) {
       throw new UnauthorizedException(
         await this.i18n.translate('common.auth.errors.INVALID_TOKEN'),
       );

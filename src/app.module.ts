@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import {
-  I18nModule,
-  I18nJsonLoader,
-  QueryResolver,
-  AcceptLanguageResolver,
-} from 'nestjs-i18n';
+
+import { I18nModule, QueryResolver, AcceptLanguageResolver } from 'nestjs-i18n';
+
 import * as path from 'path';
 
 import { PostsModule } from './modules/posts/posts.module';
@@ -21,7 +18,7 @@ import { PostsModule } from './modules/posts/posts.module';
         path: path.join(__dirname, '/i18n/'),
       },
       resolvers: [
-        { options: ['lang'], use: QueryResolver },
+        { use: QueryResolver, options: ['lang'] },
         AcceptLanguageResolver,
       ],
     }),

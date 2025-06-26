@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
+import { I18nService } from 'nestjs-i18n';
+import { PostData } from '@prisma/client';
+
 import { PostsRepository } from './posts.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { I18nService } from 'nestjs-i18n';
-import { PostData } from '@prisma/client';
 
 @Injectable()
 export class PostsService {
@@ -27,7 +29,7 @@ export class PostsService {
 
     return {
       message: await this.i18n.translate('common.posts.success.CREATED'),
-      
+
       post,
     };
   }
@@ -62,10 +64,10 @@ export class PostsService {
     const post = await this.postsRepository.findPostById(id);
 
     if (!post) {
-      const msg = await this.i18n.translate('common.posts.errors.NOT_FOUND', { args: { id } });
-      console.log(msg)
       throw new NotFoundException(
-        await this.i18n.translate('common.posts.errors.NOT_FOUND', { args: { id } }),
+        await this.i18n.translate('common.posts.errors.NOT_FOUND', {
+          args: { id },
+        }),
       );
     }
 

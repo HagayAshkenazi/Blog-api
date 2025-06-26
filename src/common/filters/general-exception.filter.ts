@@ -17,10 +17,10 @@ export class GeneralExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const status = HttpStatus.INTERNAL_SERVER_ERROR;
+    const status: number = HttpStatus.INTERNAL_SERVER_ERROR;
     const message: string =
       exception?.message ?? HttpMessage.INTERNAL_SERVER_ERROR;
-    const stack = exception?.stack;
+    const stack: string | undefined = exception?.stack;
 
     logger.error({
       name: 'General Exception',

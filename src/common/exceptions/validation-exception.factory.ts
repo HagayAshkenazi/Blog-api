@@ -8,33 +8,32 @@ import { errorObject } from 'src/common/helpers/functions';
 
 export interface FormattedValidationError {
   field: string;
-  errors: unknown[];
+  errors: string[];
 }
+
+const translateMessage = async (
+  i18n: I18nContext,
+  message: string,
+): Promise<string> =>
+  message.startsWith('common.') ? i18n.translate(message) : message;
 
 export const validationExceptionFactory = async (
   errors: ValidationError[],
   i18n: I18nContext,
 ): Promise<BadRequestException> => {
   const formattedErrors: FormattedValidationError[] = await Promise.all(
-    errors.map(async (error) => {
+    errors.map(async (error: ValidationError) => {
       const constraints = error.constraints ?? {};
 
       const translatedErrors = await Promise.all(
-        Object.values(constraints).map(async (msg) => {
-          if (
-            typeof msg === 'string' &&
-            (msg.startsWith('validation.') || msg.startsWith('posts.'))
-          ) {
-            return await i18n.translate(msg);
-          }
-
-          return msg;
-        }),
+        Object.values(constraints).map((message: string) =>
+          translateMessage(i18n, message),
+        ),
       );
 
       return {
         field: error.property,
-        errors: translatedErrors,
+        errors: translatedErrors.filter(Boolean),
       };
     }),
   );

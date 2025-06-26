@@ -1,6 +1,10 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidationArguments,
+} from 'class-validator';
 
-export const FORBIDDEN_WORDS = [
+export const FORBIDDEN_WORDS: readonly string[] = [
   'תשוש',
   'תרנגול',
   'פעמון',
@@ -10,56 +14,52 @@ export const FORBIDDEN_WORDS = [
   'קונץ',
 ];
 
-export const containsForbiddenWords = (value: string): boolean => {
-  if (typeof value !== 'string' || !value) {
-    return false;
-  }
-
+export function containsForbiddenWords(value: string): boolean {
   const words = value
     .toLowerCase()
     .split(/[\s,.!?"'();:\-]+/)
     .filter(Boolean);
 
-  return words.some((word) => FORBIDDEN_WORDS.includes(word));
-};
+  return words.some((word: string) => FORBIDDEN_WORDS.includes(word));
+}
 
-export const isMostlyHebrew = (value: string): boolean => {
-  if (typeof value !== 'string' || !value) {
-    return false;
-  }
-
+export function isMostlyHebrew(value: string): boolean {
   const total = value.length;
-  const hebrew = (value.match(/[א-ת]/g) || []).length;
+  const hebrew = (value.match(/[\u05D0-\u05EA]/g) || []).length;
 
   return total > 0 && hebrew / total > 0.5;
-};
+}
 
-export const NoForbiddenWords =
-  (validationOptions?: ValidationOptions) =>
-  (object: Object, propertyName: string) => {
+export function NoForbiddenWords(validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string) {
     registerDecorator({
       name: 'noForbiddenWords',
       target: object.constructor,
       propertyName,
       options: validationOptions,
       validator: {
-        validate: (value: string) => !containsForbiddenWords(value),
+        validate(value: string, _args: ValidationArguments) {
+          return !containsForbiddenWords(value);
+        },
         defaultMessage: () => 'common.validation.FORBIDDEN_WORDS',
       },
     });
   };
+}
 
-export const IsMostlyHebrew =
-  (validationOptions?: ValidationOptions) =>
-  (object: Object, propertyName: string) => {
+export function IsMostlyHebrew(validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string) {
     registerDecorator({
       name: 'isMostlyHebrew',
       target: object.constructor,
       propertyName,
       options: validationOptions,
       validator: {
-        validate: isMostlyHebrew,
+        validate(value: string, _args: ValidationArguments) {
+          return isMostlyHebrew(value);
+        },
         defaultMessage: () => 'common.validation.MOSTLY_HEBREW',
       },
     });
   };
+}

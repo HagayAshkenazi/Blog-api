@@ -3,10 +3,17 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { errorObject } from 'src/common/helpers/functions';
 import { logger } from 'src/common/helpers/logs';
+
+interface ErrorResponse {
+  statusCode: number;
+  message: string | string[];
+  errors?: any;
+}
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -14,8 +21,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const status = exception.getStatus();
-    const errorResponse = exception.getResponse();
+    const status = exception.getStatus?.() ?? HttpStatus.INTERNAL_SERVER_ERROR;
+    const errorResponse = exception.getResponse?.() ?? exception.message;
 
     logger.error({
       name: 'HTTP Exception',
@@ -24,15 +31,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
       exception,
     });
 
-    if (typeof errorResponse === 'object' && errorResponse !== null) {
-      const { message, errors } = errorResponse as any;
-      response
-        .status(status)
-        .json(errorObject(status, message ?? exception.message, errors));
-    } else {
-      response
-        .status(status)
-        .json(errorObject(status, errorResponse ?? exception.message));
+    let message: string | string[] = 'Unexpected error';
+    let errors: any;
+
+    if (typeof errorResponse === 'object' && errorResponse) {
+      const res = errorResponse as Partial<ErrorResponse>;
+      message = res.message ?? exception.message;
+      errors = res.errors;
+    } else if (typeof errorResponse === 'string') {
+      message = errorResponse;
     }
+
+    response.status(status).json(errorObject(status, message, errors));
   }
 }

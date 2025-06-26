@@ -1,5 +1,6 @@
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
 import {
   Injectable,
   NestInterceptor,
@@ -7,15 +8,21 @@ import {
   CallHandler,
 } from '@nestjs/common';
 
+import { logger } from '../helpers/logs';
+
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const startTime = Date.now();
 
+    const request = context.switchToHttp().getRequest();
+
     return next.handle().pipe(
       tap(() => {
         const elapsed = Date.now() - startTime;
-        console.log(`After... ${elapsed}ms`);
+        logger.http(
+          `Request to ${request.method} ${request.url} took ${elapsed}ms`,
+        );
       }),
     );
   }

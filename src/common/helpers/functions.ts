@@ -3,13 +3,13 @@ import { FormattedValidationError } from '../exceptions/validation-exception.fac
 export interface ErrorObject {
   success: false;
   statusCode: number;
-  message: string | string[];
+  message: undefined | string | string[];
   errors?: FormattedValidationError[];
 }
 
 export const errorObject = (
   statusCode: number,
-  message: string | string[],
+  message: undefined | string | string[],
   errors?: FormattedValidationError[],
 ): ErrorObject => ({
   success: false,

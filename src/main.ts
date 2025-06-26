@@ -15,7 +15,7 @@ const bootstrap = async (): Promise<void> => {
   const configService = app.get(ConfigService);
   const i18nService = app.get<I18nService<Record<string, unknown>>>(I18nService);
 
-  app.useGlobalGuards(new AuthGuard(configService));
+  app.useGlobalGuards(new AuthGuard(configService, i18nService));
 
   app.useGlobalPipes(
     new I18nValidationPipe({

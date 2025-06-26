@@ -5,7 +5,6 @@
     "FORBIDDEN_WORDS": "The title contains a forbidden word",
     "MOSTLY_HEBREW": "At least 50% of the content must be in Hebrew"
   },
-
   "posts": {
     "errors": {
       "NOT_FOUND": "Post with ID {{id}} not found"
@@ -14,6 +13,12 @@
       "CREATED": "Post created successfully",
       "UPDATED": "Post updated successfully",
       "DELETED": "Post deleted successfully"
+    }
+  },
+  "auth": {
+    "errors": {
+      "MISSING_AUTH_HEADER": "Missing Authorization header",
+      "INVALID_TOKEN": "Invalid token"
     }
   }
 }

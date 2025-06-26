@@ -1,5 +1,5 @@
 {
-"validation": {
+  "validation": {
     "VALIDATION_FAILED": "הוולידציה נכשלה",
     "FUTURE_DATE": "זמן הפרסום חייב להיות בעתיד",
     "FORBIDDEN_WORDS": "הכותרת מכילה מילה אסורה",
@@ -13,6 +13,12 @@
       "CREATED": "הפוסט נוצר בהצלחה",
       "UPDATED": "הפוסט עודכן בהצלחה",
       "DELETED": "הפוסט נמחק בהצלחה"
+    }
+  },
+  "auth": {
+    "errors": {
+      "MISSING_AUTH_HEADER": "חסר כותרת Authorization",
+      "INVALID_TOKEN": "האסימון שסופק אינו תקף"
     }
   }
 }

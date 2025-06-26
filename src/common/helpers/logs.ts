@@ -1,10 +1,14 @@
-import * as winston from 'winston';
+import * as winston from "winston";
 
-const isProduction = process.env.NODE_ENV == 'production';
-
+const isProduction = process.env.NODE_ENV == "production";
 export const logger = winston.createLogger({
-  level: 'http',
-  format: isProduction ? winston.format.json() : winston.format.simple(),
-  defaultMeta: { service: 'Blog-API' },
+  level: "http",
+  defaultMeta: { service: "Blog-Api" },
   transports: [new winston.transports.Console()],
+  format: isProduction
+    ? winston.format.json()
+    : winston.format.combine(
+        winston.format.prettyPrint(),
+        winston.format.colorize({ all: true }),
+      ),
 });

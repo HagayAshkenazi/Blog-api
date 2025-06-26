@@ -13,7 +13,7 @@ import { PostsModule } from './modules/posts/posts.module';
       fallbackLanguage: 'en',
       loader: I18nJsonLoader,
       loaderOptions: {
-        path: path.join(__dirname, '/i18n/'),
+        path: path.join(process.cwd(), 'src/i18n'),
         watch: true,
       },
       resolvers: [

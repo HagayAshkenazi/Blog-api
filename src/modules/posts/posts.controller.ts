@@ -24,21 +24,21 @@ export class PostsController {
 
   @Get()
   async findAllPosts(): Promise<PostData[]> {
-    return this.postsService.findAllPosts();
+    return await this.postsService.findAllPosts();
   }
 
   @Get(':id')
   async findPostById(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<PostData> {
-    return this.postsService.findPostById(id);
+    return await this.postsService.findPostById(id);
   }
 
   @Put()
   async createPost(
     @Body() createPostDto: CreatePostDto,
   ): Promise<{ message: string; post: PostData }> {
-    return this.postsService.create(createPostDto);
+    return await this.postsService.create(createPostDto);
   }
 
   @Patch(':id')
@@ -46,13 +46,13 @@ export class PostsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
   ): Promise<{ message: string; post: PostData }> {
-    return this.postsService.update(id, updatePostDto);
+    return await this.postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
   async deletePost(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<{ message: string }> {
-    return this.postsService.delete(id);
+    return await this.postsService.delete(id);
   }
 }

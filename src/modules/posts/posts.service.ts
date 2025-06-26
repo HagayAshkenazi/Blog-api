@@ -29,7 +29,6 @@ export class PostsService {
 
     return {
       message: await this.i18n.translate('common.posts.success.CREATED'),
-
       post,
     };
   }

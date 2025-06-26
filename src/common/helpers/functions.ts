@@ -4,18 +4,18 @@ export interface ErrorObject {
   success: false;
   statusCode: number;
   message: string | string[];
-  errors?: FormattedValidationError;
+  errors?: FormattedValidationError[];
 }
 
 export const errorObject = (
   statusCode: number,
   message: string | string[],
-  errors?: any,
+  errors?: FormattedValidationError[],
 ): ErrorObject => {
   return {
     success: false,
     statusCode,
     message,
-    ...(errors && { errors }),
+    ...(errors?.length ? { errors } : {}),
   };
 };

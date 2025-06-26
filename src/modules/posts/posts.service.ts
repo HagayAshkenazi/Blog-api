@@ -1,30 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PostsRepository } from './posts.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { PostsRepository } from './posts.repository';
-import { I18nContext } from 'nestjs-i18n';
+import { I18nService } from 'nestjs-i18n';
+import { PostData } from '@prisma/client';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly postsRepository: PostsRepository) {}
+  constructor(
+    private readonly postsRepository: PostsRepository,
+    private readonly i18n: I18nService,
+  ) {}
 
-  async findAllPosts() {
+  async findAllPosts(): Promise<PostData[]> {
     return this.postsRepository.findAllPosts();
   }
 
-  async findPostById(id: string, i18nContext: I18nContext) {
-    return this.postsRepository.findPostById(id, i18nContext);
+  async findPostById(id: string): Promise<PostData> {
+    return this.getPostOrThrow(id);
   }
 
-  async create(data: CreatePostDto, i18nContext: I18nContext) {
-    return this.postsRepository.create(data, i18nContext);
+  async create(
+    data: CreatePostDto,
+  ): Promise<{ message: string; post: PostData }> {
+    const post = await this.postsRepository.create(data);
+
+    return {
+      message: await this.i18n.translate('common.posts.success.CREATED'),
+      
+      post,
+    };
   }
 
-  async update(id: string, data: UpdatePostDto, i18nContext: I18nContext) {
-    return this.postsRepository.update(id, data, i18nContext);
+  async update(
+    id: string,
+    data: UpdatePostDto,
+  ): Promise<{ message: string; post: PostData }> {
+    const post = await this.getPostOrThrow(id);
+
+    const updatedPost = await this.postsRepository.update(id, {
+      title: data.title ?? post.title,
+      content: data.content ?? post.content,
+    });
+
+    return {
+      message: await this.i18n.translate('common.posts.success.UPDATED'),
+      post: updatedPost,
+    };
   }
 
-  async delete(id: string, i18nContext: I18nContext) {
-    return this.postsRepository.delete(id, i18nContext);
+  async delete(id: string): Promise<{ message: string }> {
+    await this.getPostOrThrow(id);
+    await this.postsRepository.delete(id);
+
+    return {
+      message: await this.i18n.translate('common.posts.success.DELETED'),
+    };
+  }
+
+  private async getPostOrThrow(id: string): Promise<PostData> {
+    const post = await this.postsRepository.findPostById(id);
+
+    if (!post) {
+      const msg = await this.i18n.translate('common.posts.errors.NOT_FOUND', { args: { id } });
+      console.log(msg)
+      throw new NotFoundException(
+        await this.i18n.translate('common.posts.errors.NOT_FOUND', { args: { id } }),
+      );
+    }
+
+    return post;
   }
 }

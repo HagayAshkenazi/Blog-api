@@ -3,11 +3,8 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "assets": [
-      {
-        "include": "src/i18n/**/*",
-        "outDir": "dist/src/i18n"
-      }
-    ]
+    "deleteOutDir": true,
+    "webpack": true,
+    "assets": [{ "include": "i18n/**/*", "watchAssets": true }]
   }
 }

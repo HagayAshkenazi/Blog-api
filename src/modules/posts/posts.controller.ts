@@ -7,12 +7,14 @@ import {
   Patch,
   Put,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { I18n, I18nContext } from 'nestjs-i18n';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -23,35 +25,25 @@ export class PostsController {
   }
 
   @Get(':id')
-  async findPostById(
-    @Param('id', ParseUUIDPipe) id: string,
-    @I18n() i18n: I18nContext,
-  ) {
-    return this.postsService.findPostById(id, i18n);
+  async findPostById(@Param('id', ParseUUIDPipe) id: string) {
+    return this.postsService.findPostById(id);
   }
 
   @Put()
-  async createPost(
-    @Body() createPostDto: CreatePostDto,
-    @I18n() i18n: I18nContext,
-  ) {
-    return this.postsService.create(createPostDto, i18n);
+  async createPost(@Body() createPostDto: CreatePostDto) {
+    return this.postsService.create(createPostDto);
   }
 
   @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
-    @I18n() i18n: I18nContext,
   ) {
-    return this.postsService.update(id, updatePostDto, i18n);
+    return this.postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
-  async delete(
-    @Param('id', ParseUUIDPipe) id: string,
-    @I18n() i18n: I18nContext,
-  ) {
-    return this.postsService.delete(id, i18n);
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
+    return this.postsService.delete(id);
   }
 }

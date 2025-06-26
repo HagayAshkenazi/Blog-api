@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
 
     if (!authHeader) {
       throw new UnauthorizedException(
-        await this.i18n.translate('auth.errors.MISSING_AUTH_HEADER'),
+        await this.i18n.translate('common.auth.errors.MISSING_AUTH_HEADER'),
       );
     }
 
@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
 
     if (type !== 'Bearer' || token !== this.configService.get('AUTH_TOKEN')) {
       throw new UnauthorizedException(
-        await this.i18n.translate('auth.errors.INVALID_TOKEN'),
+        await this.i18n.translate('common.auth.errors.INVALID_TOKEN'),
       );
     }
 

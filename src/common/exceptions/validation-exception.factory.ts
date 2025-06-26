@@ -11,35 +11,37 @@ export interface FormattedValidationError {
   errors: unknown[];
 }
 
-export const validationExceptionFactory = (
+export const validationExceptionFactory = async (
   errors: ValidationError[],
   i18n: I18nContext,
-): BadRequestException => {
-  const formattedErrors: FormattedValidationError[] = errors.map((error) => {
-    const translatedErrors = (
-      Object.values(error.constraints ?? {}) as string[]
-    ).map((msg) => {
-      if (
-        typeof msg === 'string' &&
-        (msg.startsWith('validation.') || msg.startsWith('posts.'))
-      ) {
-        return i18n.translate(msg);
-      }
+): Promise<BadRequestException> => {
+  const formattedErrors: FormattedValidationError[] = await Promise.all(
+    errors.map(async (error) => {
+      const constraints = error.constraints ?? {};
 
-      return msg;
-    });
+      const translatedErrors = await Promise.all(
+        Object.values(constraints).map(async (msg) => {
+          if (
+            typeof msg === 'string' &&
+            (msg.startsWith('validation.') || msg.startsWith('posts.'))
+          ) {
+            return await i18n.translate(msg);
+          }
 
-    return {
-      field: error.property,
-      errors: translatedErrors,
-    };
-  });
+          return msg;
+        }),
+      );
+
+      return {
+        field: error.property,
+        errors: translatedErrors,
+      };
+    }),
+  );
+
+  const message = await i18n.translate('common.validation.VALIDATION_FAILED');
 
   return new BadRequestException(
-    errorObject(
-      HttpStatus.BAD_REQUEST,
-      i18n.translate('validation.VALIDATION_FAILED'),
-      formattedErrors,
-    ),
+    errorObject(HttpStatus.BAD_REQUEST, message, formattedErrors),
   );
 };

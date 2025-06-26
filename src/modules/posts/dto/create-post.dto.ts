@@ -5,15 +5,15 @@ import {
 } from 'src/common/decorators/validators.validator';
 
 export class CreatePostDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'validation.REQUIRED' })
   @IsString()
-  @MaxLength(25)
+  @MaxLength(25, { message: 'validation.MAX_LENGTH_25' })
   @NoForbiddenWords()
   title: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'validation.REQUIRED' })
   @IsString()
-  @MaxLength(200)
+  @MaxLength(200, { message: 'validation.MAX_LENGTH_200' })
   @IsMostlyHebrew()
   content: string;
 }

@@ -44,7 +44,7 @@ export const NoForbiddenWords =
       options: validationOptions,
       validator: {
         validate: (value: string) => !containsForbiddenWords(value),
-        defaultMessage: () => 'validation.FORBIDDEN_WORDS',
+        defaultMessage: () => 'common.validation.FORBIDDEN_WORDS',
       },
     });
   };
@@ -59,7 +59,7 @@ export const IsMostlyHebrew =
       options: validationOptions,
       validator: {
         validate: isMostlyHebrew,
-        defaultMessage: () => 'validation.MOSTLY_HEBREW',
+        defaultMessage: () => 'common.validation.MOSTLY_HEBREW',
       },
     });
   };

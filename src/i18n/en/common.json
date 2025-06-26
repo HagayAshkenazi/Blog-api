@@ -3,11 +3,14 @@
     "VALIDATION_FAILED": "Validation failed",
     "FUTURE_DATE": "Publish time must be in the future",
     "FORBIDDEN_WORDS": "The title contains a forbidden word",
-    "MOSTLY_HEBREW": "At least 50% of the content must be in Hebrew"
+    "MOSTLY_HEBREW": "At least 50% of the content must be in Hebrew",
+    "REQUIRED": "This field is required",
+    "MAX_LENGTH_25": "This field must not exceed 25 characters",
+    "MAX_LENGTH_200": "This field must not exceed 200 characters"
   },
   "posts": {
     "errors": {
-      "NOT_FOUND": "Post with ID {{id}} not found"
+      "NOT_FOUND": "Post with {id} not found"
     },
     "success": {
       "CREATED": "Post created successfully",

@@ -6,24 +6,14 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { GeneralExceptionFilter } from './common/filters/general-exception.filter';
 import { morganLogger } from './common/middlewares/logs';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
-import { AuthGuard } from './common/guards/auth.guard';
-import { I18nValidationPipe, I18nService } from 'nestjs-i18n';
+import { I18nValidationPipe } from 'src/common/pipes/i18n-validation.pipe';
 
 const bootstrap = async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
-  const i18nService = app.get<I18nService<Record<string, unknown>>>(I18nService);
 
-  app.useGlobalGuards(new AuthGuard(configService, i18nService));
-
-  app.useGlobalPipes(
-    new I18nValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
+  app.useGlobalPipes(new I18nValidationPipe()); 
 
   app.useGlobalFilters(
     new GeneralExceptionFilter(),

@@ -22,41 +22,22 @@ export class PostsService {
     return this.getPostOrThrow(id);
   }
 
-  async create(
-    data: CreatePostDto,
-  ): Promise<{ message: string; post: PostData }> {
-    const post = await this.postsRepository.create(data);
-
-    return {
-      message: await this.i18n.translate('common.posts.success.CREATED'),
-      post,
-    };
+  async create(data: CreatePostDto): Promise<PostData> {
+    return await this.postsRepository.create(data);
   }
 
-  async update(
-    id: string,
-    data: UpdatePostDto,
-  ): Promise<{ message: string; post: PostData }> {
+  async update(id: string, data: UpdatePostDto): Promise<PostData> {
     const post = await this.getPostOrThrow(id);
 
-    const updatedPost = await this.postsRepository.update(id, {
+    return await this.postsRepository.update(id, {
       title: data.title ?? post.title,
       content: data.content ?? post.content,
     });
-
-    return {
-      message: await this.i18n.translate('common.posts.success.UPDATED'),
-      post: updatedPost,
-    };
   }
 
-  async delete(id: string): Promise<{ message: string }> {
+  async delete(id: string): Promise<void> {
     await this.getPostOrThrow(id);
     await this.postsRepository.delete(id);
-
-    return {
-      message: await this.i18n.translate('common.posts.success.DELETED'),
-    };
   }
 
   private async getPostOrThrow(id: string): Promise<PostData> {

@@ -35,9 +35,7 @@ export class PostsController {
   }
 
   @Put()
-  async createPost(
-    @Body() createPostDto: CreatePostDto,
-  ): Promise<{ message: string; post: PostData }> {
+  async createPost(@Body() createPostDto: CreatePostDto): Promise<PostData> {
     return await this.postsService.create(createPostDto);
   }
 
@@ -45,14 +43,12 @@ export class PostsController {
   async updatePost(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
-  ): Promise<{ message: string; post: PostData }> {
+  ): Promise<PostData> {
     return await this.postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
-  async deletePost(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<{ message: string }> {
-    return await this.postsService.delete(id);
+  async deletePost(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    await this.postsService.delete(id);
   }
 }

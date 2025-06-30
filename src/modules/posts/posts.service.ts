@@ -1,8 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
 import { I18nService } from 'nestjs-i18n';
 import { Post as PostData } from '@prisma/client';
-
 import { PostsRepository } from './posts.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -27,11 +25,9 @@ export class PostsService {
   }
 
   async update(id: string, data: UpdatePostDto): Promise<PostData> {
-    const post = await this.getPostOrThrow(id);
-
     return await this.postsRepository.update(id, {
-      title: data.title ?? post.title,
-      content: data.content ?? post.content,
+      title: data.title,
+      content: data.content,
     });
   }
 

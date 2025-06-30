@@ -6,12 +6,10 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
-  Put,
+  Post,
   UseGuards,
 } from '@nestjs/common';
-
 import { AuthGuard } from 'src/common/guards/auth.guard';
-
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -34,7 +32,7 @@ export class PostsController {
     return await this.postsService.findPostById(id);
   }
 
-  @Put()
+  @Post()
   async createPost(@Body() createPostDto: CreatePostDto): Promise<PostData> {
     return await this.postsService.create(createPostDto);
   }

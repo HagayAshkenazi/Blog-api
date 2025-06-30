@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
-
 import { AppModule } from 'src/app.module';
 import { I18nValidationPipe } from 'src/common/pipes/i18n-validation.pipe';
-
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { GeneralExceptionFilter } from './common/filters/general-exception.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';

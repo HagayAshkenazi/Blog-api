@@ -1,5 +1,4 @@
 import * as morgan from 'morgan';
-
 import { logger } from '../helpers/logs';
 
 export const morganLogger = morgan((tokens: any, req: any, res: any) => {

@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-
 import { Post as PostData } from '@prisma/client';
-
 import { PrismaService } from '../../../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -29,7 +27,7 @@ export class PostsRepository {
     });
   }
 
-  async delete(id: string): Promise<PostData> {
-    return await this.prisma.post.delete({ where: { id } });
+  async delete(id: string): Promise<void> {
+    await this.prisma.post.delete({ where: { id } });
   }
 }

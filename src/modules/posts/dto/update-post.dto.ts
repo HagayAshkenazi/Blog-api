@@ -1,5 +1,4 @@
 import { IsString, MaxLength, IsNotEmpty } from 'class-validator';
-
 import {
   NoForbiddenWords,
   IsMostlyHebrew,

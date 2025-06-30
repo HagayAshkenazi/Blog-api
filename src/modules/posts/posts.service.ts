@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { I18nService } from 'nestjs-i18n';
-import { PostData } from '@prisma/client';
+import { Post as PostData } from '@prisma/client';
 
 import { PostsRepository } from './posts.repository';
 import { CreatePostDto } from './dto/create-post.dto';

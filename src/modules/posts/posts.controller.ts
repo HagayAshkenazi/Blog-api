@@ -15,7 +15,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { PostData } from '@prisma/client';
+import { Post as PostData } from '@prisma/client';
 
 @UseGuards(AuthGuard)
 @Controller('posts')

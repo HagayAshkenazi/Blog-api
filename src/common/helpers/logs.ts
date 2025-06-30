@@ -1,6 +1,7 @@
 import * as winston from 'winston';
 
 const isProduction = process.env.NODE_ENV === 'production';
+
 const customFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   winston.format.errors({ stack: true }),
@@ -15,6 +16,24 @@ const customFormat = winston.format.combine(
 export const logger = winston.createLogger({
   level: 'http',
   defaultMeta: { service: 'Blog-Api' },
-  transports: [new winston.transports.Console()],
   format: isProduction ? winston.format.json() : customFormat,
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({
+      filename: 'logs/error.log',
+      level: 'error',  
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.errors({ stack: true }),
+        winston.format.json()
+      ),
+    }),
+    new winston.transports.File({
+      filename: 'logs/combined.log',  
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+      ),
+    }),
+  ],
 });

@@ -4,8 +4,8 @@ import {
   ValidationError,
 } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
-import { errorObject } from 'src/common/helpers/functions';
-import { FormattedValidationError } from 'src/interfaces';
+import { errorObject } from '@/common/helpers/functions';
+import { FormattedValidationError } from '@/interfaces';
 
 const translateMessage = async (
   i18n: I18nContext,

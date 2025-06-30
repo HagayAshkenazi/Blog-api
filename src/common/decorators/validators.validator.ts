@@ -1,10 +1,10 @@
-import { FORBIDDEN_WORDS } from 'src/consts';
+import { FORBIDDEN_WORDS } from '@/consts';
 import { registerDecorator, ValidationOptions } from 'class-validator';
 import {
   WORD_SPLIT_REGEX,
   NON_SPACE_REGEX,
   HEBREW_CHAR_REGEX,
-} from 'src/consts/regex';
+} from '@/consts/regex';
 
 const FindAllForbiddenWords = (value: string): string[] => {
   const words = value.toLowerCase().split(WORD_SPLIT_REGEX).filter(Boolean);

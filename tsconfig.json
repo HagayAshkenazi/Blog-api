@@ -9,9 +9,9 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
-      "src/*": ["*"],
+      "@/*": ["src/*"],
     },
     "incremental": true,
     "skipLibCheck": true,

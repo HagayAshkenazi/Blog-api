@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { I18nContext } from 'nestjs-i18n';
-import { logger } from '../helpers/logs';
-import { errorObject } from '../helpers/functions';
-import { AppException } from 'src/interfaces';
+import { logger } from '@/common/helpers/logs';
+import { errorObject } from '@/common/helpers/functions';
+import { AppException } from '@/interfaces';
 
 @Catch()
 export class GeneralExceptionFilter implements ExceptionFilter {

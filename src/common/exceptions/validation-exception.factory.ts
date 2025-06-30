@@ -5,11 +5,7 @@ import {
 } from '@nestjs/common';
 import { I18nContext } from 'nestjs-i18n';
 import { errorObject } from 'src/common/helpers/functions';
-
-export interface FormattedValidationError {
-  field: string;
-  errors: string[];
-}
+import { FormattedValidationError } from 'src/interfaces';
 
 const translateMessage = async (
   i18n: I18nContext,

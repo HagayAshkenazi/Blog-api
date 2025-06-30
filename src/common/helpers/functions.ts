@@ -1,11 +1,5 @@
-import { FormattedValidationError } from '../exceptions/validation-exception.factory';
+import { ErrorObject, FormattedValidationError } from 'src/interfaces';
 
-export interface ErrorObject {
-  success: false;
-  statusCode: number;
-  message: undefined | string | string[];
-  errors?: FormattedValidationError[];
-}
 
 export const errorObject = (
   statusCode: number,

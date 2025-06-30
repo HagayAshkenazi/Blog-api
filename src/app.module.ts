@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
 import { I18nModule, QueryResolver, AcceptLanguageResolver } from 'nestjs-i18n';
-
 import * as path from 'path';
 
 import { PostsModule } from './modules/posts/posts.module';
@@ -15,7 +13,7 @@ import { PostsModule } from './modules/posts/posts.module';
       fallbackLanguage: 'en',
       loaderOptions: {
         watch: true,
-        path: path.join(__dirname, '/i18n/'),
+        path: path.join(__dirname, 'locales'),
       },
       resolvers: [
         { use: QueryResolver, options: ['lang'] },

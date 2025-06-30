@@ -8,7 +8,7 @@ export default tsEslint.config(
   ...tsEslint.configs.recommended,
   prettierEslintRecommended,
   {
-    ignores: ["@generated/*", "src/common/interfaces/graphql/*", "dist/*"],
+    ignores: ["dist/*"],
   },
   {
     plugins: {

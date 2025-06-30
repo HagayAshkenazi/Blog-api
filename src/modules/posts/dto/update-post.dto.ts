@@ -2,7 +2,7 @@ import { IsString, MaxLength, IsNotEmpty } from 'class-validator';
 import {
   NoForbiddenWords,
   IsMostlyHebrew,
-} from 'src/common/decorators/validators.validator';
+} from '@/common/decorators/validators.validator';
 
 export class UpdatePostDto {
   @IsNotEmpty({ message: 'validation.REQUIRED' })

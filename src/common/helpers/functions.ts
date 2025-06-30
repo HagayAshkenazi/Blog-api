@@ -1,4 +1,4 @@
-import { ErrorObject, FormattedValidationError } from 'src/interfaces';
+import { ErrorObject, FormattedValidationError } from '@/interfaces';
 
 export const errorObject = (
   statusCode: number,

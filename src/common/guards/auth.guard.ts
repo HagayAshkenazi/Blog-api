@@ -6,17 +6,17 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { I18nService } from 'nestjs-i18n';
+import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly configService: ConfigService,
-    private readonly i18n: I18nService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
+    const i18n = I18nContext.create(request); 
     const authHeader = request.get('authorization');
 
     if (!authHeader) {

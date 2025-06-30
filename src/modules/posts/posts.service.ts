@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { Post as PostData } from '@prisma/client';
-import { PostsRepository } from './posts.repository';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { PostsRepository } from '@/modules/posts/posts.repository';
+import { CreatePostDto } from '@/modules/posts/dto/create-post.dto';
+import { UpdatePostDto } from '@/modules/posts/dto/update-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -12,12 +12,12 @@ export class PostsService {
     private readonly i18n: I18nService,
   ) {}
 
-  async findAllPosts(): Promise<PostData[]> {
-    return this.postsRepository.findAllPosts();
+  async findAll(): Promise<PostData[]> {
+    return await this.postsRepository.findAll();
   }
 
-  async findPostById(id: string): Promise<PostData> {
-    return this.getPostOrThrow(id);
+  async find(id: string): Promise<PostData | null> {
+    return await this.findOrThrow(id);
   }
 
   async create(data: CreatePostDto): Promise<PostData> {
@@ -32,21 +32,18 @@ export class PostsService {
   }
 
   async delete(id: string): Promise<void> {
-    await this.getPostOrThrow(id);
     await this.postsRepository.delete(id);
   }
 
-  private async getPostOrThrow(id: string): Promise<PostData> {
-    const post = await this.postsRepository.findPostById(id);
-
-    if (!post) {
+  private async findOrThrow(id: string): Promise<PostData | null> {
+    try {
+      return await this.postsRepository.find(id); 
+    } catch (error) {
       throw new NotFoundException(
         await this.i18n.translate('common.posts.errors.NOT_FOUND', {
           args: { id },
         }),
       );
     }
-
-    return post;
   }
 }

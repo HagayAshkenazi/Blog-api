@@ -3,42 +3,41 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/common/guards/auth.guard';
-import { PostsService } from './posts.service';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { PostsService } from '@/modules/posts/posts.service';
+import { CreatePostDto } from '@/modules/posts/dto/create-post.dto';
+import { UpdatePostDto } from '@/modules/posts/dto/update-post.dto';
 import { Post as PostData } from '@prisma/client';
 
-@UseGuards(AuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  async findAllPosts(): Promise<PostData[]> {
-    return await this.postsService.findAllPosts();
+  async findAll(): Promise<PostData[]> {
+    return await this.postsService.findAll();
   }
 
   @Get(':id')
-  async findPostById(
+  async find(
     @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<PostData> {
-    return await this.postsService.findPostById(id);
+  ): Promise<PostData | null> {
+    return await this.postsService.find(id);
   }
 
   @Post()
-  async createPost(@Body() createPostDto: CreatePostDto): Promise<PostData> {
+  async create(@Body() createPostDto: CreatePostDto): Promise<PostData> {
     return await this.postsService.create(createPostDto);
   }
 
   @Patch(':id')
-  async updatePost(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
   ): Promise<PostData> {
@@ -46,7 +45,8 @@ export class PostsController {
   }
 
   @Delete(':id')
-  async deletePost(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.postsService.delete(id);
   }
 }

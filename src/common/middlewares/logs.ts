@@ -1,5 +1,5 @@
 import * as morgan from 'morgan';
-import { logger } from '../helpers/logs';
+import { logger } from '@/common/helpers/logs';
 import type { Request, Response } from 'express';
 
 export const morganLogger = morgan((tokens: morgan.TokenIndexer, req: Request, res: Response) => {

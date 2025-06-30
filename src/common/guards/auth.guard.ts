@@ -16,12 +16,12 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const i18n = I18nContext.create(request); 
+    const i18n = I18nContext.current(); 
     const authHeader = request.get('authorization');
 
     if (!authHeader) {
       throw new UnauthorizedException(
-        await this.i18n.translate('common.auth.errors.MISSING_AUTH_HEADER'),
+        await i18n.translate('common.auth.errors.MISSING_AUTH_HEADER'),
       );
     }
 
@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
       token !== this.configService.get<string>('AUTH_TOKEN')
     ) {
       throw new UnauthorizedException(
-        await this.i18n.translate('common.auth.errors.INVALID_TOKEN'),
+        await i18n.translate('common.auth.errors.INVALID_TOKEN'),
       );
     }
 

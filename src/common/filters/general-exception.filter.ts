@@ -16,7 +16,7 @@ export class GeneralExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const i18n = I18nContext.create(request); 
+    const i18n = I18nContext.create(request);
 
     const status =
       exception.status ??
@@ -28,7 +28,7 @@ export class GeneralExceptionFilter implements ExceptionFilter {
     const isInternal = errorNumber === HttpStatus.INTERNAL_SERVER_ERROR;
 
     const message = isInternal
-      ? await i18n.translate('common.errors.INTERNAL_SERVER_ERROR')
+      ? (i18n ? await i18n.translate('common.errors.INTERNAL_SERVER_ERROR') : 'Internal server error')
       : exception.message;
 
     logger.error({

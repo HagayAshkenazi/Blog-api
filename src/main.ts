@@ -19,7 +19,7 @@ const bootstrap = async (): Promise<void> => {
   app.useGlobalPipes(new I18nValidationPipe());
   app.useGlobalGuards(new AuthGuard(configService));
   app.useGlobalFilters(new GeneralExceptionFilter(), new HttpExceptionFilter());
-
+ 
   app.use(morganLogger);
 
   app.useGlobalInterceptors(new LoggingInterceptor());

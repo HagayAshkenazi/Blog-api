@@ -31,34 +31,34 @@ export function isMostlyHebrew(value: string): boolean {
 }
 
 export function NoForbiddenWords(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
+      propertyName,
       name: 'noForbiddenWords',
       target: object.constructor,
-      propertyName,
       options: validationOptions,
       validator: {
+        defaultMessage: () => 'common.validation.FORBIDDEN_WORDS',
         validate(value: string, _args: ValidationArguments) {
           return !containsForbiddenWords(value);
         },
-        defaultMessage: () => 'common.validation.FORBIDDEN_WORDS',
       },
     });
   };
 }
 
 export function IsMostlyHebrew(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
+      propertyName,
       name: 'isMostlyHebrew',
       target: object.constructor,
-      propertyName,
       options: validationOptions,
       validator: {
+        defaultMessage: () => 'common.validation.MOSTLY_HEBREW',
         validate(value: string, _args: ValidationArguments) {
           return isMostlyHebrew(value);
         },
-        defaultMessage: () => 'common.validation.MOSTLY_HEBREW',
       },
     });
   };

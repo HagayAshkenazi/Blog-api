@@ -12,8 +12,8 @@ export const errorObject = (
   message: undefined | string | string[],
   errors?: FormattedValidationError[],
 ): ErrorObject => ({
-  success: false,
-  statusCode,
   message,
+  statusCode,
+  success: false,
   ...(errors?.length ? { errors } : {}),
 });

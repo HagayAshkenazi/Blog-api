@@ -1,14 +1,14 @@
-import eslint from "@eslint/js";
-import tsEslint from "typescript-eslint";
-import perfectionist from "eslint-plugin-perfectionist";
-import prettierEslintRecommended from "eslint-plugin-prettier/recommended";
+import eslint from '@eslint/js';
+import tsEslint from 'typescript-eslint';
+import perfectionist from 'eslint-plugin-perfectionist';
+import prettierEslintRecommended from 'eslint-plugin-prettier/recommended';
 
 export default tsEslint.config(
   eslint.configs.recommended,
   ...tsEslint.configs.recommended,
   prettierEslintRecommended,
   {
-    ignores: ["dist/*"],
+    ignores: ['dist/*'],
   },
   {
     plugins: {
@@ -16,29 +16,22 @@ export default tsEslint.config(
     },
     settings: {
       perfectionist: {
-        type: "line-length",
+        type: 'line-length',
         partitionByComment: true,
         partitionByNewLine: true,
       },
     },
     rules: {
-      "perfectionist/sort-objects": "error",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/interface-name-prefix": "off",
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "prettier/prettier": [
-        "error",
+      'perfectionist/sort-objects': 'error',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/interface-name-prefix': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      'prettier/prettier': [
+        'error',
         {
-          endOfLine: "auto",
-          arrowParens: "avoid",
-        },
-      ],
-      "perfectionist/sort-imports": [
-        "error",
-        {
-          environment: "bun",
-          newlinesBetween: "ignore",
+          endOfLine: 'auto',
+          arrowParens: 'avoid',
         },
       ],
     },

@@ -26,9 +26,9 @@ export class GeneralExceptionFilter implements ExceptionFilter {
         : await i18n?.translate('common.errors.INTERNAL_SERVER_ERROR');
 
     logger.error({
-      name: 'General Exception',
       path: request.url,
       method: request.method,
+      name: 'General Exception',
       exception: {
         message,
         stack: exception.stack,

@@ -16,7 +16,7 @@ import { PostsModule } from './modules/posts/posts.module';
         path: path.join(__dirname, 'locales'),
       },
       resolvers: [
-        { use: QueryResolver, options: ['lang'] },
+        { options: ['lang'], use: QueryResolver },
         AcceptLanguageResolver,
       ],
     }),

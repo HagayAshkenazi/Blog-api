@@ -25,10 +25,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const errorResponse = exception.getResponse?.() ?? exception.message;
 
     logger.error({
-      name: 'HTTP Exception',
-      path: request.url,
-      method: request.method,
       exception,
+      path: request.url,
+      name: 'HTTP Exception',
+      method: request.method,
     });
 
     let message: string | string[] = 'Unexpected error';

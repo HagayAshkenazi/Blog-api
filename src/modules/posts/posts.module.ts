@@ -8,8 +8,8 @@ import { PostsRepository } from './posts.repository';
 
 @Module({
   imports: [PrismaModule],
+  exports: [PostsService],
   controllers: [PostsController],
   providers: [PostsService, PostsRepository],
-  exports: [PostsService],
 })
 export class PostsModule {}

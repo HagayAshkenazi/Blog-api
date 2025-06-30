@@ -45,6 +45,7 @@
     "@typescript-eslint/parser": "^8.35.0",
     "eslint": "^9.30.0",
     "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-nestjs": "^1.2.3",
     "eslint-plugin-perfectionist": "^4.15.0",
     "eslint-plugin-prettier": "^5.5.1",
     "globals": "^16.0.0",

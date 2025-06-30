@@ -1,26 +1,17 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
-
-export const FORBIDDEN_WORDS: readonly string[] = [
-  'תשוש',
-  'תרנגול',
-  'פעמון',
-  'נועה',
-  'קירל',
-  'מרגול',
-  'קונץ',
-];
+import { registerDecorator, ValidationOptions } from 'class-validator';
+import { FORBIDDEN_WORDS } from 'src/consts';
 
 export function containsForbiddenWords(value: string): boolean {
   const words = value
     .toLowerCase()
-    .split(/[\s,.!?"'();:\-]+/)
+    .split(/[\s.,!?"'();:\-{}<>]+/)
     .filter(Boolean);
 
-  return words.some((word: string) => FORBIDDEN_WORDS.includes(word));
+  return words.some(word =>
+    FORBIDDEN_WORDS.some(
+      forbiddenWord => word === forbiddenWord || word.startsWith(forbiddenWord),
+    ),
+  );
 }
 
 export function isMostlyHebrew(value: string): boolean {
@@ -39,7 +30,7 @@ export function NoForbiddenWords(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         defaultMessage: () => 'common.validation.FORBIDDEN_WORDS',
-        validate(value: string, _args: ValidationArguments) {
+        validate(value: string) {
           return !containsForbiddenWords(value);
         },
       },
@@ -56,7 +47,7 @@ export function IsMostlyHebrew(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         defaultMessage: () => 'common.validation.MOSTLY_HEBREW',
-        validate(value: string, _args: ValidationArguments) {
+        validate(value: string) {
           return isMostlyHebrew(value);
         },
       },

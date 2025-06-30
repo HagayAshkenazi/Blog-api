@@ -6,17 +6,17 @@ import {
   HEBREW_CHAR_REGEX,
 } from 'src/consts/regex';
 
-export const ContainsForbiddenWords = (value: string): boolean => {
+const FindAllForbiddenWords = (value: string): string[] => {
   const words = value.toLowerCase().split(WORD_SPLIT_REGEX).filter(Boolean);
 
-  return words.some(word =>
-    FORBIDDEN_WORDS.some(
-      forbiddenWord => word === forbiddenWord || word.startsWith(forbiddenWord),
+  return FORBIDDEN_WORDS.filter(forbiddenWord =>
+    words.some(
+      word => word === forbiddenWord || word.startsWith(forbiddenWord),
     ),
   );
 };
 
-export const HasMostlyHebrewChars = (value: string): boolean => {
+const HasMostlyHebrewChars = (value: string): boolean => {
   const graphemes = value.normalize('NFC').match(NON_SPACE_REGEX) ?? [];
   const hebrew = graphemes.filter(char => HEBREW_CHAR_REGEX.test(char)).length;
 
@@ -31,9 +31,22 @@ export const NoForbiddenWords = (validationOptions?: ValidationOptions) => {
       target: object.constructor,
       options: validationOptions,
       validator: {
-        defaultMessage: () => 'common.validation.FORBIDDEN_WORDS',
-        validate(value: string) {
-          return !ContainsForbiddenWords(value);
+        validate(value: string, args: ValidationArguments) {
+          const forbiddenWords = FindAllForbiddenWords(value);
+          if (forbiddenWords.length > 0) {
+            (args.constraints as any) = [forbiddenWords];
+            return false;
+          }
+          return true;
+        },
+        defaultMessage: (args: I18nValidationArguments) => {
+          const forbiddenWords: string[] = args.constraints?.[0] ?? [];
+          return args.t('common.validation.FORBIDDEN_WORDS', {
+            args: {
+              property: args.property,
+              words: forbiddenWords.join(', '),
+            },
+          });
         },
       },
     });

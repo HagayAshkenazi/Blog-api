@@ -1,6 +1,5 @@
 import { ErrorObject, FormattedValidationError } from 'src/interfaces';
 
-
 export const errorObject = (
   statusCode: number,
   message: undefined | string | string[],
@@ -8,6 +7,5 @@ export const errorObject = (
 ): ErrorObject => ({
   message,
   statusCode,
-  success: false,
   ...(errors?.length ? { errors } : {}),
 });

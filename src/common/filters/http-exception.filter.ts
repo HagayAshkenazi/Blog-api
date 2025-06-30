@@ -8,12 +8,7 @@ import {
 import { Request, Response } from 'express';
 import { errorObject } from 'src/common/helpers/functions';
 import { logger } from 'src/common/helpers/logs';
-
-interface ErrorResponse {
-  statusCode: number;
-  message: string | string[];
-  errors?: any;
-}
+import { ErrorResponse } from 'src/interfaces';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -27,7 +22,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     logger.error({
       exception,
       path: request.url,
-      name: 'HTTP Exception',
+      name: exception.name,
       method: request.method,
     });
 

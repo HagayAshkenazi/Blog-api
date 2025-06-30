@@ -1,6 +1,3 @@
-import { logger } from '../helpers/logs';
-import { errorObject } from '../helpers/functions';
-
 import {
   Catch,
   ExceptionFilter,
@@ -9,29 +6,40 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { I18nContext } from 'nestjs-i18n';
+import { logger } from '../helpers/logs';
+import { errorObject } from '../helpers/functions';
+import { AppException } from 'src/interfaces';
 
 @Catch()
 export class GeneralExceptionFilter implements ExceptionFilter {
-  async catch(exception: Error, host: ArgumentsHost): Promise<void> {
+  async catch(exception: AppException, host: ArgumentsHost): Promise<void> {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const i18n = I18nContext.current();
+    const i18n = I18nContext.create(request); 
 
-    const status = HttpStatus.INTERNAL_SERVER_ERROR;
+    const status =
+      exception.status ??
+      exception.getErrorStatus?.() ??
+      HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const message =
-      exception?.message && exception.message !== 'Internal server error'
-        ? exception.message
-        : await i18n?.translate('common.errors.INTERNAL_SERVER_ERROR');
+    const errorNumber = exception.getErrorNumber?.() ?? status;
+
+    const isInternal = errorNumber === HttpStatus.INTERNAL_SERVER_ERROR;
+
+    const message = isInternal
+      ? await i18n.translate('common.errors.INTERNAL_SERVER_ERROR')
+      : exception.message;
 
     logger.error({
       path: request.url,
       method: request.method,
-      name: 'General Exception',
+      name: exception.name,
       exception: {
         message,
         stack: exception.stack,
+        errorNumber,
+        status
       },
     });
 

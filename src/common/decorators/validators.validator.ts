@@ -33,7 +33,7 @@ export const NoForbiddenWords = (validationOptions?: ValidationOptions) => {
   return (object: object, propertyName: string) => {
     registerDecorator({
       propertyName,
-      name: 'noForbiddenWords',
+      name: 'NoForbiddenWords',
       target: object.constructor,
       options: validationOptions,
       validator: {
@@ -62,7 +62,7 @@ export const IsMostlyHebrew = (validationOptions?: ValidationOptions) => {
   return (object: object, propertyName: string) => {
     registerDecorator({
       propertyName,
-      name: 'isMostlyHebrew',
+      name: 'IsMostlyHebrew',
       target: object.constructor,
       options: validationOptions,
       validator: {

@@ -16,7 +16,7 @@ export class GeneralExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const i18n = I18nContext.create(request);
+    const i18n = I18nContext.current();
 
     const status =
       exception.status ??

@@ -12,4 +12,6 @@ model Post {
   title      String   @db.VarChar(25)
   content    String   @db.VarChar(200)
   publish_at DateTime @default(now()) @map("publish_at")
+
+  @@map("posts")
 }

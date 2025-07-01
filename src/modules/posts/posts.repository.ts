@@ -12,7 +12,7 @@ export class PostsRepository {
     return await this.prisma.post.findMany();
   }
 
-  async find(id: string): Promise<PostData | null> {
+  async find(id: string): Promise<PostData | undefined> {
     return await this.prisma.post.findUniqueOrThrow({ where: { id } });
   }
 

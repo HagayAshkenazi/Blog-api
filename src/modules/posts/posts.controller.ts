@@ -27,7 +27,7 @@ export class PostsController {
   @Get(':id')
   async find(
     @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<PostData | null> {
+  ): Promise<PostData | undefined> {
     return await this.postsService.find(id);
   }
 
@@ -40,7 +40,7 @@ export class PostsController {
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
-  ): Promise<PostData> {
+  ): Promise<PostData | undefined> {
     return await this.postsService.update(id, updatePostDto);
   }
 

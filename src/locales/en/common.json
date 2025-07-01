@@ -1,17 +1,16 @@
 {
   "validation": {
     "VALIDATION_FAILED": "Validation failed",
-    "FUTURE_DATE": "Publish time must be in the future",
-    "FORBIDDEN_WORDS": "The title contains a forbidden word",
-    "MOSTLY_HEBREW": "At least 50% of the content must be in Hebrew",
     "REQUIRED": "This field is required",
+    "FUTURE_DATE": "Publish time must be in the future",
+    "FORBIDDEN_WORDS": "Contains forbidden words: {words}",
+    "MOSTLY_HEBREW": "At least 50% of the content must be in Hebrew",
     "MAX_LENGTH_25": "This field must not exceed 25 characters",
     "MAX_LENGTH_200": "This field must not exceed 200 characters"
   },
   "posts": {
     "errors": {
-      "NOT_FOUND": "Post with {id} not found",
-      "INTERNAL_SERVER_ERROR": "Internal Server Error"
+      "NOT_FOUND": "Post with ID '{id}' not found"
     }
   },
   "auth": {
@@ -19,5 +18,8 @@
       "MISSING_AUTH_HEADER": "Missing Authorization header",
       "INVALID_TOKEN": "Invalid token"
     }
+  },
+  "errors": {
+    "INTERNAL_SERVER_ERROR": "Internal server error"
   }
 }

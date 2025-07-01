@@ -1,52 +1,57 @@
-import { FORBIDDEN_WORDS } from '@/consts';
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import { FORBIDDEN_WORDS } from '@/constants';
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidationArguments,
+} from 'class-validator';
 import {
   WORD_SPLIT_REGEX,
   NON_SPACE_REGEX,
   HEBREW_CHAR_REGEX,
-} from '@/consts/regex';
+} from '@/constants/regex';
 
 const FindAllForbiddenWords = (value: string): string[] => {
   const words = value.toLowerCase().split(WORD_SPLIT_REGEX).filter(Boolean);
 
-  return FORBIDDEN_WORDS.filter(forbiddenWord =>
+  return FORBIDDEN_WORDS.filter((forbiddenWord: string) =>
     words.some(
-      word => word === forbiddenWord || word.startsWith(forbiddenWord),
+      (word) => word === forbiddenWord || word.startsWith(forbiddenWord),
     ),
   );
 };
 
 const HasMostlyHebrewChars = (value: string): boolean => {
   const graphemes = value.normalize('NFC').match(NON_SPACE_REGEX) ?? [];
-  const hebrew = graphemes.filter(char => HEBREW_CHAR_REGEX.test(char)).length;
+  const hebrew = graphemes.filter((char: string) =>
+    HEBREW_CHAR_REGEX.test(char),
+  ).length;
 
   return graphemes.length > 0 && hebrew / graphemes.length > 0.5;
 };
 
 export const NoForbiddenWords = (validationOptions?: ValidationOptions) => {
-  return (object: Record<string, any>, propertyName: string) => {
+  return (object: object, propertyName: string) => {
     registerDecorator({
       propertyName,
       name: 'noForbiddenWords',
       target: object.constructor,
       options: validationOptions,
       validator: {
-        validate(value: string, args: ValidationArguments) {
+        validate(value: string, args: ValidationArguments): boolean {
           const forbiddenWords = FindAllForbiddenWords(value);
+
           if (forbiddenWords.length > 0) {
-            (args.constraints as any) = [forbiddenWords];
+            args.object[`__forbiddenWords_${args.property}`] = forbiddenWords;
             return false;
           }
+
           return true;
         },
-        defaultMessage: (args: I18nValidationArguments) => {
-          const forbiddenWords: string[] = args.constraints?.[0] ?? [];
-          return args.t('common.validation.FORBIDDEN_WORDS', {
-            args: {
-              property: args.property,
-              words: forbiddenWords.join(', '),
-            },
-          });
+        defaultMessage(args: ValidationArguments): string {
+          const forbiddenWords =
+            args.object[`__forbiddenWords_${args.property}`] ?? [];
+
+          return `common.validation.FORBIDDEN_WORDS|${forbiddenWords.join(', ')}`;
         },
       },
     });
@@ -54,7 +59,7 @@ export const NoForbiddenWords = (validationOptions?: ValidationOptions) => {
 };
 
 export const IsMostlyHebrew = (validationOptions?: ValidationOptions) => {
-  return (object: Record<string, any>, propertyName: string) => {
+  return (object: object, propertyName: string) => {
     registerDecorator({
       propertyName,
       name: 'isMostlyHebrew',

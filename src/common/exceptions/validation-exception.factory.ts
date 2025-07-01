@@ -10,8 +10,17 @@ import { FormattedValidationError } from '@/interfaces';
 const translateMessage = async (
   i18n: I18nContext,
   message: string,
-): Promise<string> =>
-  message.startsWith('common.') ? i18n.translate(message) : message;
+): Promise<string> => {
+  if (!message.startsWith('common.')) return message;
+
+  const [key, forbiddenWords] = message.split('|');
+
+  return i18n.translate(key, {
+    args: {
+      words: forbiddenWords ?? '',
+    },
+  });
+};
 
 export const validationExceptionFactory = async (
   errors: ValidationError[],
@@ -22,9 +31,9 @@ export const validationExceptionFactory = async (
       const constraints = error.constraints ?? {};
 
       const translatedErrors = await Promise.all(
-        Object.values(constraints).map((message: string) =>
-          translateMessage(i18n, message),
-        ),
+        Object.values(constraints).map(async (message: string) => {
+          return await translateMessage(i18n, message);
+        }),
       );
 
       return {

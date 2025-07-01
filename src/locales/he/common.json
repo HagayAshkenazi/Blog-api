@@ -1,23 +1,25 @@
 {
   "validation": {
     "VALIDATION_FAILED": "הוולידציה נכשלה",
-    "FUTURE_DATE": "זמן הפרסום חייב להיות בעתיד",
-    "FORBIDDEN_WORDS": "הכותרת מכילה מילה אסורה",
-    "MOSTLY_HEBREW": "לפחות 50% מהתוכן חייב להיות בעברית",
     "REQUIRED": "שדה זה הינו שדה חובה",
+    "FUTURE_DATE": "זמן הפרסום חייב להיות בעתיד",
+    "FORBIDDEN_WORDS": "מכיל מילים אסורות: {words}",
+    "MOSTLY_HEBREW": "לפחות 50% מהתוכן חייב להיות בעברית",
     "MAX_LENGTH_25": "שדה זה לא יכול להכיל יותר מ־25 תווים",
     "MAX_LENGTH_200": "שדה זה לא יכול להכיל יותר מ־200 תווים"
   },
   "posts": {
     "errors": {
-      "NOT_FOUND": "פוסט עם מזהה {id} לא נמצא",
-      "INTERNAL_SERVER_ERROR": "שגיאת שרת פנימית"
+      "NOT_FOUND": "פוסט עם מזהה '{id}' לא נמצא"
     }
   },
   "auth": {
     "errors": {
-      "MISSING_AUTH_HEADER": "חסר כותרת Authorization",
+      "MISSING_AUTH_HEADER": "כותרת Authorization חסרה",
       "INVALID_TOKEN": "האסימון שסופק אינו תקף"
     }
+  },
+  "errors": {
+    "INTERNAL_SERVER_ERROR": "שגיאת שרת פנימית"
   }
 }

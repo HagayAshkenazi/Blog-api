@@ -19,7 +19,7 @@ export class I18nValidationPipe extends ValidationPipe {
       ): Promise<BadRequestException> => {
         const i18n = I18nContext.current();
 
-        return validationExceptionFactory(errors, i18n!);
+        return await validationExceptionFactory(errors, i18n!);
       },
     });
   }

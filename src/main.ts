@@ -8,10 +8,11 @@ import { LoggingInterceptor } from '@/common/interceptors/logging.interceptor';
 import { morganLogger } from '@/common/middlewares/logs';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthGuard } from '@/common/guards/auth.guard';
+import { ConfigService } from '@nestjs/config';
 
 const bootstrap = async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get('ConfigService');
+  const configService = app.get(ConfigService);
 
   app.enableCors();
   app.use(helmet());
@@ -19,7 +20,7 @@ const bootstrap = async (): Promise<void> => {
   app.useGlobalPipes(new I18nValidationPipe());
   app.useGlobalGuards(new AuthGuard(configService));
   app.useGlobalFilters(new GeneralExceptionFilter(), new HttpExceptionFilter());
- 
+
   app.use(morganLogger);
 
   app.useGlobalInterceptors(new LoggingInterceptor());

@@ -11,8 +11,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { PostsService } from '@/modules/posts/posts.service';
-import { CreatePostDto } from '@/modules/posts/dto/create-post.dto';
-import { UpdatePostDto } from '@/modules/posts/dto/update-post.dto';
+import { PostDto } from '@/modules/posts/dto/post.dto';
 import { Post as PostData } from '@prisma/client';
 
 @Controller('posts')
@@ -32,14 +31,14 @@ export class PostsController {
   }
 
   @Post()
-  async create(@Body() createPostDto: CreatePostDto): Promise<PostData> {
+  async create(@Body() createPostDto: PostDto): Promise<PostData> {
     return await this.postsService.create(createPostDto);
   }
 
   @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updatePostDto: UpdatePostDto,
+    @Body() updatePostDto: PostDto,
   ): Promise<PostData | undefined> {
     return await this.postsService.update(id, updatePostDto);
   }

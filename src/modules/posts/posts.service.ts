@@ -1,12 +1,8 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { Post as PostData, Prisma } from '@prisma/client';
 import { PostsRepository } from '@/modules/posts/posts.repository';
-import { CreatePostDto } from '@/modules/posts/dto/create-post.dto';
-import { UpdatePostDto } from '@/modules/posts/dto/update-post.dto';
+import { PostDto } from '@/modules/posts/dto/post.dto';
 
 @Injectable()
 export class PostsService {
@@ -27,18 +23,18 @@ export class PostsService {
     }
   }
 
-  async create(data: CreatePostDto): Promise<PostData> {
+  async create(data: PostDto): Promise<PostData> {
     return this.postsRepository.create(data);
   }
 
-  async update(id: string, data: UpdatePostDto): Promise<PostData | undefined> {
+  async update(id: string, data: PostDto): Promise<PostData | undefined> {
     try {
       return await this.postsRepository.update(id, {
         title: data.title,
         content: data.content,
       });
     } catch (error) {
-       await this.handleNotFound(error, id);
+      await this.handleNotFound(error, id);
     }
   }
 
@@ -58,9 +54,12 @@ export class PostsService {
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === 'P2025'
     ) {
-      const message = await this.i18n.translate('common.posts.errors.NOT_FOUND', {
-        args: { id },
-      });
+      const message = await this.i18n.translate(
+        'common.posts.errors.NOT_FOUND',
+        {
+          args: { id },
+        },
+      );
       throw new NotFoundException(message);
     }
 

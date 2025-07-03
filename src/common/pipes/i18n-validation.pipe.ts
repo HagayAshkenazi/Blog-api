@@ -4,12 +4,12 @@ import {
   ValidationError,
   BadRequestException,
 } from '@nestjs/common';
-import { I18nContext } from 'nestjs-i18n';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { validationExceptionFactory } from '@/common/exceptions/validation-exception.factory';
 
 @Injectable()
 export class I18nValidationPipe extends ValidationPipe {
-  constructor() {
+  constructor(private readonly i18n: I18nService) {
     super({
       transform: true,
       whitelist: true,
@@ -17,9 +17,7 @@ export class I18nValidationPipe extends ValidationPipe {
       exceptionFactory: async (
         errors: ValidationError[],
       ): Promise<BadRequestException> => {
-        const i18n = I18nContext.current();
-
-        return await validationExceptionFactory(errors, i18n!);
+        return await validationExceptionFactory(errors, this.i18n);
       },
     });
   }

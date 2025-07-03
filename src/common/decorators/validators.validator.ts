@@ -8,7 +8,7 @@ import {
   WORD_SPLIT_REGEX,
   NON_SPACE_REGEX,
   HEBREW_CHAR_REGEX,
-} from '@/constants/regex';
+} from '@/constants/regex.constant';
 
 const FindAllForbiddenWords = (value: string): string[] => {
   const words = value.toLowerCase().split(WORD_SPLIT_REGEX).filter(Boolean);

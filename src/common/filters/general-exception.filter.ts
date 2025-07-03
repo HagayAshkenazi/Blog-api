@@ -5,18 +5,18 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { I18nContext } from 'nestjs-i18n';
+import { I18nService } from 'nestjs-i18n';
 import { logger } from '@/common/helpers/logs';
 import { errorObject } from '@/common/helpers/functions';
 import { AppException } from '@/interfaces';
 
 @Catch()
 export class GeneralExceptionFilter implements ExceptionFilter {
+  constructor(private readonly i18n: I18nService) {}
   async catch(exception: AppException, host: ArgumentsHost): Promise<void> {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const i18n = I18nContext.current();
 
     const status =
       exception.status ??
@@ -28,7 +28,7 @@ export class GeneralExceptionFilter implements ExceptionFilter {
     const isInternal = errorNumber === HttpStatus.INTERNAL_SERVER_ERROR;
 
     const message = isInternal
-      ? (i18n ? await i18n.translate('common.errors.INTERNAL_SERVER_ERROR') : 'Internal server error')
+      ? await this.i18n.translate('common.errors.INTERNAL_SERVER_ERROR')
       : exception.message;
 
     logger.error({
@@ -39,7 +39,7 @@ export class GeneralExceptionFilter implements ExceptionFilter {
         message,
         stack: exception.stack,
         errorNumber,
-        status
+        status,
       },
     });
 

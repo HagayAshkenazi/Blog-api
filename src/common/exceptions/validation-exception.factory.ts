@@ -3,12 +3,12 @@ import {
   HttpStatus,
   ValidationError,
 } from '@nestjs/common';
-import { I18nContext } from 'nestjs-i18n';
+import { I18nService } from 'nestjs-i18n';
 import { errorObject } from '@/common/helpers/functions';
 import { FormattedValidationError } from '@/interfaces';
 
 const translateMessage = async (
-  i18n: I18nContext,
+  i18n: I18nService,
   message: string,
 ): Promise<string> => {
   if (!message.startsWith('common.')) return message;
@@ -24,7 +24,7 @@ const translateMessage = async (
 
 export const validationExceptionFactory = async (
   errors: ValidationError[],
-  i18n: I18nContext,
+  i18n: I18nService,
 ): Promise<BadRequestException> => {
   const formattedErrors: FormattedValidationError[] = await Promise.all(
     errors.map(async (error: ValidationError) => {

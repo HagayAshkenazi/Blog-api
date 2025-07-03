@@ -16,11 +16,7 @@ export class PostsService {
   }
 
   async find(id: string): Promise<PostData | undefined> {
-    try {
-      return await this.postsRepository.find(id);
-    } catch (error) {
-      await this.handleNotFound(error, id);
-    }
+    return await this.postsRepository.find(id);
   }
 
   async create(data: PostDto): Promise<PostData> {
@@ -28,41 +24,13 @@ export class PostsService {
   }
 
   async update(id: string, data: PostDto): Promise<PostData | undefined> {
-    try {
-      return await this.postsRepository.update(id, {
-        title: data.title,
-        content: data.content,
-      });
-    } catch (error) {
-      await this.handleNotFound(error, id);
-    }
+    return await this.postsRepository.update(id, {
+      title: data.title,
+      content: data.content,
+    });
   }
 
   async delete(id: string): Promise<void> {
-    try {
-      await this.postsRepository.delete(id);
-    } catch (error) {
-      await this.handleNotFound(error, id);
-    }
-  }
-
-  private async handleNotFound(
-    error: Prisma.PrismaClientKnownRequestError | Error,
-    id: string,
-  ): Promise<void> {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === 'P2025'
-    ) {
-      const message = await this.i18n.translate(
-        'common.posts.errors.NOT_FOUND',
-        {
-          args: { id },
-        },
-      );
-      throw new NotFoundException(message);
-    }
-
-    throw error;
+    await this.postsRepository.delete(id);
   }
 }

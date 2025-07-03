@@ -1,15 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { I18nService } from 'nestjs-i18n';
-import { Post as PostData, Prisma } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { Post as PostData } from '@prisma/client';
 import { PostsRepository } from '@/modules/posts/posts.repository';
 import { PostDto } from '@/modules/posts/dto/post.dto';
 
 @Injectable()
 export class PostsService {
-  constructor(
-    private readonly postsRepository: PostsRepository,
-    private readonly i18n: I18nService,
-  ) {}
+  constructor(private readonly postsRepository: PostsRepository) {}
 
   async findAll(): Promise<PostData[]> {
     return this.postsRepository.findAll();

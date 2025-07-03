@@ -23,12 +23,12 @@ async function bootstrap(): Promise<void> {
 
   app.useGlobalPipes(new I18nValidationPipe(i18nService));
 
-  app.useGlobalGuards(new AuthGuard(configService));
+  app.useGlobalGuards(new AuthGuard(configService, i18nService));
 
   app.useGlobalFilters(
     new GeneralExceptionFilter(i18nService),
     new HttpExceptionFilter(),
-    new PrismaNotFoundFilter(i18nService)
+    new PrismaNotFoundFilter(i18nService),
   );
 
   app.useGlobalInterceptors(new LoggingInterceptor());

@@ -1,9 +1,4 @@
-export const FORBIDDEN_WORDS: readonly string[] = [
-  'תשוש',
-  'תרנגול',
-  'פעמון',
-  'נועה',
-  'קירל',
-  'מרגול',
-  'קונץ',
-];
+export const FORBIDDEN_WORDS: readonly string[] = (process.env.FORBIDDEN_WORDS ?? '')
+  .split(',')
+  .map(word => word.trim())
+  .filter(word => word.length > 0);

@@ -35,7 +35,7 @@ const bootstrap = async (): Promise<void> => {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.setGlobalPrefix('/api', { exclude: ['/'] });
+  app.setGlobalPrefix('/api', { exclude: ['/healthcheck', '/status', '/metrics'] });
   await app.listen(process.env.PORT_NUMBER || 3000);
 };
 

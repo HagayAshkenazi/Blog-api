@@ -1,5 +1,20 @@
 {
   "version": "0.2",
   "language": "en,he",
-  "words": ["nestjs", "prisma", "uuid", "i18n", "API", "Hagay"]
+  "words": [
+    "nestjs",
+    "prisma",
+    "uuid",
+    "i18n",
+    "API",
+    "Hagay",
+    "healthcheck",
+    "תשוש",
+    "תרנגול",
+    "פעמון",
+    "נועה",
+    "קירל",
+    "מרגול",
+    "קונץ"
+  ]
 }

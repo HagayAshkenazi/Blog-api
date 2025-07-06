@@ -1,6 +1,5 @@
 {
-  "version": "0.2",
-  "language": "en,he",
+  "ignoreCase": true,
   "words": [
     "nestjs",
     "prisma",
@@ -12,12 +11,6 @@
     "pgcrypto",
     "dbgenerated",
     "pkey",
-    "תשוש",
-    "תרנגול",
-    "פעמון",
-    "נועה",
-    "קירל",
-    "מרגול",
-    "קונץ"
-  ]
+  ],
+  "includePaths": ["src"]
 }

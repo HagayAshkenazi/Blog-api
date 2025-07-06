@@ -11,6 +11,7 @@ import { AuthGuard } from '@/common/guards/auth.guard';
 import { ConfigService } from '@nestjs/config';
 import { I18nService } from 'nestjs-i18n';
 import { PrismaNotFoundFilter } from '@/common/filters/prisma-not-found.filter';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -45,14 +46,14 @@ async function bootstrap(): Promise<void> {
   SwaggerModule.setup('docs', app, swaggerDocument);
 
   app.setGlobalPrefix('/api', {
-    exclude: ['/healthcheck', '/status', '/metrics'],
+    exclude: ['/healthcheck'],
   });
 
   await app.init();
   const port = configService.get<number>('PORT_NUMBER') || 3000;
   await app.listen(port);
 
-  console.log(`🚀 Application is running on: http://localhost:${port}`);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
 bootstrap();

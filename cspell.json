@@ -9,8 +9,7 @@
     "Hagay",
     "healthcheck",
     "pgcrypto",
-    "dbgenerated",
-    "pkey",
+    "dbgenerated"
   ],
-  "includePaths": ["src"]
+  "includePaths": ["src"],
 }

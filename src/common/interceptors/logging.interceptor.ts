@@ -6,7 +6,7 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { logger } from '../helpers/logs';
+import { logger } from '@/common/helpers/logs';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

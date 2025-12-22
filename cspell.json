@@ -1,0 +1,15 @@
+{
+  "ignoreCase": true,
+  "words": [
+    "nestjs",
+    "prisma",
+    "uuid",
+    "i18n",
+    "API",
+    "Hagay",
+    "healthcheck",
+    "pgcrypto",
+    "dbgenerated"
+  ],
+  "includePaths": ["src"],
+}

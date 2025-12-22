@@ -1,0 +1,25 @@
+{
+  "validation": {
+    "VALIDATION_FAILED": "Validation failed",
+    "REQUIRED": "This field is required",
+    "FUTURE_DATE": "Publish time must be in the future",
+    "FORBIDDEN_WORDS": "Contains forbidden words: {words}",
+    "MOSTLY_HEBREW": "At least 50% of the content must be in Hebrew",
+    "MAX_LENGTH_25": "This field must not exceed 25 characters",
+    "MAX_LENGTH_200": "This field must not exceed 200 characters"
+  },
+  "posts": {
+    "errors": {
+      "NOT_FOUND": "Post with ID '{id}' not found"
+    }
+  },
+  "auth": {
+    "errors": {
+      "MISSING_AUTH_HEADER": "Missing Authorization header",
+      "INVALID_TOKEN": "Invalid token"
+    }
+  },
+  "errors": {
+    "INTERNAL_SERVER_ERROR": "Internal server error"
+  }
+}
